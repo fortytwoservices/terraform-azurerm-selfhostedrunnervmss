@@ -1,4 +1,4 @@
 output "password" {
-    value = local.password
-    sensitive = true
+  value     = local.password
+  sensitive = true
 }

@@ -22,9 +22,9 @@ variable "virtual_machine_scale_set_name" {
 }
 
 variable "use_custom_subnet" {
-    type = bool
-    default = false
-    description = "Set to true if subnet_id is provided in order to actually use it (works around a TF issue)"
+  type        = bool
+  default     = false
+  description = "Set to true if subnet_id is provided in order to actually use it (works around a TF issue)"
 }
 
 variable "subnet_id" {
@@ -54,30 +54,30 @@ variable "runner_platform" {
 }
 
 variable "sku" {
-    type = string
-    default = "Standard_D2s_v3"
-    description = "The sku to create virtual machines with"
+  type        = string
+  default     = "Standard_D2s_v3"
+  description = "The sku to create virtual machines with"
 }
 
 variable "username" {
-    type = string
-    default = "runneradmin"
-    description = "Username of the local user account"
+  type        = string
+  default     = "runneradmin"
+  description = "Username of the local user account"
 }
 
 variable "password" {
-    type = string
-    default = null
-    description = "Password of the local user acocunt"
-    sensitive = true
+  type        = string
+  default     = null
+  description = "Password of the local user acocunt"
+  sensitive   = true
 }
 
 variable "tags" {
-    type = map
-    default = {}
+  type    = map(any)
+  default = {}
 }
 
 variable "ssh_public_keys" {
-    type = list(string)
-    default = []
+  type    = list(string)
+  default = []
 }
