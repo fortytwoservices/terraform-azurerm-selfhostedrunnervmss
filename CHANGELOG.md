@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.1](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.0...v1.1.1) (2023-09-15)
+
+
+### Bug Fixes
+
+* Ignore changes to instnaces and automatic os upgrade policy ([0bd1bae](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/0bd1bae49db4bad71e39189f3d9956b15a162849))
+* Ignore changes to tags ([7f4b420](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/7f4b420d0a1fcf10c3cf39bdd691c914b4ffd6a2))
+* More changes to life cycle ([6dc08de](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/6dc08dea3e5d52cd3fac54c705985fda35b9dcb2))
+* Terraform formatting ([caff378](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/caff378166502ca409072d735c457ba0715a363d))
+
 ## [1.1.0](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.0.3...v1.1.0) (2023-09-15)
 
 
