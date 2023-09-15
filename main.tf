@@ -66,6 +66,12 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
     }
   }
 
+  plan {
+    publisher = "amestofortytwoas1653635920536"
+    product   = local.image_offer
+    name      = local.image_sku
+  }
+
   source_image_reference {
     publisher = "amestofortytwoas1653635920536"
     offer     = local.image_offer
