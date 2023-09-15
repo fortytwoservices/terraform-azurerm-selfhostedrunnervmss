@@ -2,11 +2,13 @@ provider "azurerm" {
   features {}
 }
 
+# Create custom rg
 resource "azurerm_resource_group" "rg" {
   location = "norwayeast"
   name     = "runners"
 }
 
+# Create custom vnet
 resource "azurerm_virtual_network" "vmss" {
   name                = "runner-network"
   address_space       = ["10.0.0.0/24"]
