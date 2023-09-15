@@ -34,7 +34,7 @@ resource "azurerm_virtual_network" "vmss" {
 
   depends_on = [azurerm_resource_group.rg]
   lifecycle {
-    ignore_changes = [ tags ]
+    ignore_changes = [tags]
   }
 }
 
@@ -90,7 +90,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
   }
 
   lifecycle {
-    ignore_changes = [ tags, automatic_os_upgrade_policy, instances, overprovision, single_placement_group ]
+    ignore_changes = [tags, automatic_os_upgrade_policy, instances, overprovision, single_placement_group]
   }
 }
 
@@ -133,8 +133,8 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
       subnet_id = var.subnet_id != null ? var.subnet_id : azurerm_subnet.vmss[0].id
     }
   }
-  
+
   lifecycle {
-    ignore_changes = [ tags, automatic_os_upgrade_policy, instances, overprovision, single_placement_group ]
+    ignore_changes = [tags, automatic_os_upgrade_policy, instances, overprovision, single_placement_group]
   }
 }
