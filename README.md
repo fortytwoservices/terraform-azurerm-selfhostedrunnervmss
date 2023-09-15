@@ -26,7 +26,7 @@ No requirements.
 
 ## Examples
 
-### Example A
+### Minimum
 
 ```hcl
 provider "azurerm" {
@@ -34,9 +34,9 @@ provider "azurerm" {
 }
 
 module "vmss" {
-  source                         = "amestofortytwo/selfhostedrunnervmss/azurerm"
-  operating_system               = "ubuntu"       # windows or ubuntu
-  runner_platform                = "azure_devops" # azure_devops or github
+  source           = "amestofortytwo/selfhostedrunnervmss/azurerm"
+  operating_system = "ubuntu"       # windows or ubuntu
+  runner_platform  = "azure_devops" # azure_devops or github
 }
 
 output "password" {
@@ -44,7 +44,7 @@ output "password" {
 }
 ```
 
-### Example B
+### Advanced
 
 ```hcl
 provider "azurerm" {
@@ -111,7 +111,7 @@ No modules.
 | <a name="input_sku"></a> [sku](#input\_sku) | The sku to create virtual machines with | `string` | `"Standard_D2s_v3"` | no |
 | <a name="input_ssh_public_keys"></a> [ssh\_public\_keys](#input\_ssh\_public\_keys) | n/a | `list(string)` | `[]` | no |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | When provided, this subnet will be used for the scale set, rather than creating a new virtual network and subnet | `string` | `null` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map` | `{}` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | `{}` | no |
 | <a name="input_use_custom_subnet"></a> [use\_custom\_subnet](#input\_use\_custom\_subnet) | Set to true if subnet\_id is provided in order to actually use it (works around a TF issue) | `bool` | `false` | no |
 | <a name="input_use_existing_resource_group"></a> [use\_existing\_resource\_group](#input\_use\_existing\_resource\_group) | Whether to use an existing resource group or not | `bool` | `false` | no |
 | <a name="input_username"></a> [username](#input\_username) | Username of the local user account | `string` | `"runneradmin"` | no |

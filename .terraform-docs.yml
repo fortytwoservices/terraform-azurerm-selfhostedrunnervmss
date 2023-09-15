@@ -20,16 +20,16 @@ content: |-
 
   ## Examples
 
-  ### Example A
+  ### Minimum
 
   ```hcl
-  {{ include "examples/exampleA/main.tf" }}
+  {{ include "examples/Minimum/main.tf" }}
   ```
 
-  ### Example B
+  ### Advanced
 
   ```hcl
-  {{ include "examples/exampleB/main.tf" }}
+  {{ include "examples/Advanced/main.tf" }}
   ```
 
   {{ .Providers }}
