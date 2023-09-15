@@ -22,7 +22,7 @@ resource "azurerm_subnet" "vmss" {
 }
 
 module "vmss" {
-  source                         = "c:/git/terraform-azurerm-selfhostedrunnervmss" # TODO
+  source                         = "amestofortytwo/selfhostedrunnervmss/azurerm"
   operating_system               = "ubuntu"       # windows or ubuntu
   runner_platform                = "azure_devops" # azure_devops or github
   resource_group_name            = azurerm_resource_group.rg.name
