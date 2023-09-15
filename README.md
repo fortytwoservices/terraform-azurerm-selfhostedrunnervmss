@@ -15,10 +15,10 @@ module "vmss" {
 }
 ```
 
-After deploying the virtual machine scale set, you need to configure Azure DevOps or GitHub:
+After deploying the virtual machine scale set, you need to configure the Azure DevOps or GitHub side of things according to our documentation:
 
-- [Configure Azure DevOps Agent Pool](https://docs.byfortytwo.com/Self%20Hosted%20Runners/azuredevops-vmss-step2/)
-- [Configure GitHub](https://docs.byfortytwo.com/Self%20Hosted%20Runners/github-vmss-step2/)
+- [Configure Azure DevOps Agent Pool](https://docs.byfortytwo.com/Self%20Hosted%20Runners/Azure%20DevOps/step2/)
+- [Configure GitHub](https://docs.byfortytwo.com/Self%20Hosted%20Runners/GitHub/step2/)
 
 ## Requirements
 
