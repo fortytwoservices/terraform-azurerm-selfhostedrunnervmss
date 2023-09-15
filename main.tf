@@ -90,7 +90,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
   }
 
   lifecycle {
-    ignore_changes = [ tags ]
+    ignore_changes = [ tags, automatic_os_upgrade_policy, instances ]
   }
 }
 
@@ -135,6 +135,6 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
   }
   
   lifecycle {
-    ignore_changes = [ tags ]
+    ignore_changes = [ tags, automatic_os_upgrade_policy, instances ]
   }
 }
