@@ -3,7 +3,7 @@ provider "azurerm" {
 }
 
 module "vmss" {
-  source                         = "c:/git/terraform-azurerm-selfhostedrunnervmss" # TODO
+  source                         = "amestofortytwo/selfhostedrunnervmss/azurerm"
   operating_system               = "ubuntu"       # windows or ubuntu
   runner_platform                = "azure_devops" # azure_devops or github
 }
