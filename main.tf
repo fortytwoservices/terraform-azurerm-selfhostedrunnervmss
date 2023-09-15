@@ -105,6 +105,12 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
     version   = "latest"
   }
 
+  plan {
+    publisher = "amestofortytwoas1653635920536"
+    product   = local.image_offer
+    name      = local.image_sku
+  }
+
   os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
