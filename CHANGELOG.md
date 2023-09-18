@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.2...v1.1.3) (2023-09-18)
+
+
+### Bug Fixes
+
+* Set upgrade mode to automatic ([eb0ef63](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/eb0ef634c8aa5fa6af486cf01cb4a9c8886119ac))
+
 ## [1.1.2](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.1...v1.1.2) (2023-09-15)
 
 
