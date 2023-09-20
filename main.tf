@@ -1,13 +1,8 @@
 locals {
   resource_group_name = var.use_existing_resource_group ? var.resource_group_name : azurerm_resource_group.rg[0].name
   image_offer         = var.runner_platform == "azure_devops" ? "self_hosted_runner_ado" : "self_hosted_runner_github"
-  image_sku = lookup({
-    "self_hosted_runner_ado:ubuntu"     = "ubuntu_latest"
-    "self_hosted_runner_ado:windows"    = "windows_latest"
-    "self_hosted_runner_github:ubuntu"  = "ubuntu_latest"
-    "self_hosted_runner_github:windows" = "windows-latest"
-  }, "${local.image_offer}:${var.operating_system}", "ubuntu_latest")
-  password = var.password != null ? var.password : random_password.password[0].result
+  image_sku           = "${var.operating_system}-latest"
+  password            = var.password != null ? var.password : random_password.password[0].result
 }
 
 resource "random_password" "password" {
