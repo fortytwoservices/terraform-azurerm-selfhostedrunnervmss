@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.3...v1.1.4) (2023-09-21)
+
+
+### Bug Fixes
+
+* Normalize to new image names (ubuntu-latest and windows-latest) ([47e4cb1](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/47e4cb143c9c68609c495ec5eab1294457e1be95))
+
 ## [1.1.3](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.2...v1.1.3) (2023-09-18)
 
 
