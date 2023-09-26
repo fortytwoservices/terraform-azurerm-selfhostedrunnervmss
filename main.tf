@@ -52,7 +52,8 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
   admin_password                  = length(var.ssh_public_keys) == 0 ? local.password : null
   disable_password_authentication = length(var.ssh_public_keys) > 0
   tags                            = var.tags
-  upgrade_mode                    = "Automatic"
+  upgrade_mode                    = "Manual"
+  overprovision                   = false
 
   dynamic "admin_ssh_key" {
     for_each = var.ssh_public_keys
