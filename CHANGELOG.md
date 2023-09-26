@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.4...v1.1.5) (2023-09-26)
+
+
+### Bug Fixes
+
+* correct upgrade parameter and overprovision ([88daa27](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/88daa27811167c6937e35d6f1d5cd1062969a732))
+
 ## [1.1.4](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.3...v1.1.4) (2023-09-21)
 
 
