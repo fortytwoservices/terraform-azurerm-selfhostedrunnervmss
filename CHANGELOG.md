@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.5...v1.1.6) (2023-09-27)
+
+
+### Bug Fixes
+
+* Fix for advanced example with custom subnet ([c8d31d1](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/c8d31d18020fb841f327f2cc49b01deb593e949f))
+
 ## [1.1.5](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.4...v1.1.5) (2023-09-26)
 
 
