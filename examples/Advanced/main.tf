@@ -34,6 +34,7 @@ module "vmss" {
   sku                            = "Standard_D2s_v3"
   ssh_public_keys                = ["ssh-rsa AAAAB3NzaC1yc2EAAAADA....QFv2PJ0= marius@42device"]
   subnet_id                      = azurerm_subnet.vmss.id
+  use_custom_subnet              = true
 }
 
 output "password" {
