@@ -81,3 +81,9 @@ variable "ssh_public_keys" {
   type    = list(string)
   default = []
 }
+
+variable "load_balancer_backend_address_pool_id" {
+  type    = string
+  default = ""
+  
+}

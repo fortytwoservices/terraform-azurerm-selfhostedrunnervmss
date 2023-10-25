@@ -89,6 +89,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
       name      = "internal"
       primary   = true
       subnet_id = var.subnet_id != null ? var.subnet_id : azurerm_subnet.vmss[0].id
+      load_balancer_backend_address_pool_ids = [var.load_balancer_backend_address_pool_id]
     }
   }
 
@@ -135,6 +136,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
       name      = "internal"
       primary   = true
       subnet_id = var.subnet_id != null ? var.subnet_id : azurerm_subnet.vmss[0].id
+      load_balancer_backend_address_pool_ids = [var.load_balancer_backend_address_pool_id]
     }
   }
 
