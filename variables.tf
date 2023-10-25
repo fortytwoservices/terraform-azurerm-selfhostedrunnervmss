@@ -86,5 +86,4 @@ variable "load_balancer_backend_address_pool_id" {
   description = "(Optional) Value of the backend address pool id to use for the load balancer. I.e. for static outbound NAT."
   type    = string
   default = ""
-  
 }
