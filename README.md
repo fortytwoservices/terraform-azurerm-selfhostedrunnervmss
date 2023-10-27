@@ -51,11 +51,13 @@ provider "azurerm" {
   features {}
 }
 
+# Create custom rg
 resource "azurerm_resource_group" "rg" {
   location = "norwayeast"
   name     = "runners"
 }
 
+# Create custom vnet
 resource "azurerm_virtual_network" "vmss" {
   name                = "runner-network"
   address_space       = ["10.0.0.0/24"]
@@ -81,6 +83,7 @@ module "vmss" {
   sku                            = "Standard_D2s_v3"
   ssh_public_keys                = ["ssh-rsa AAAAB3NzaC1yc2EAAAADA....QFv2PJ0= marius@42device"]
   subnet_id                      = azurerm_subnet.vmss.id
+  use_custom_subnet              = true
 }
 
 output "password" {
@@ -103,6 +106,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_load_balancer_backend_address_pool_id"></a> [load\_balancer\_backend\_address\_pool\_id](#input\_load\_balancer\_backend\_address\_pool\_id) | (Optional) Value of the backend address pool id to use for the load balancer. I.e. for static outbound NAT. | `string` | `""` | no |
 | <a name="input_location"></a> [location](#input\_location) | The Azure region to create the scale set in | `string` | `"westeurope"` | no |
 | <a name="input_operating_system"></a> [operating\_system](#input\_operating\_system) | The OS of the runners | `string` | `"ubuntu"` | no |
 | <a name="input_password"></a> [password](#input\_password) | Password of the local user acocunt | `string` | `null` | no |
