@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.6...v1.2.0) (2023-10-27)
+
+
+### Features
+
+* add alb backend pool binding support ([8d472c6](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/8d472c618658af5af3ff80016f30010af2755450))
+
 ## [1.1.6](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.5...v1.1.6) (2023-09-27)
 
 
