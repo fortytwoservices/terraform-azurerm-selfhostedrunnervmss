@@ -24,17 +24,18 @@ resource "azurerm_subnet" "vmss" {
 }
 
 module "vmss" {
-  source                         = "amestofortytwo/selfhostedrunnervmss/azurerm"
-  operating_system               = "ubuntu"       # windows or ubuntu
-  runner_platform                = "azure_devops" # azure_devops or github
-  resource_group_name            = azurerm_resource_group.rg.name
-  use_existing_resource_group    = true
-  location                       = azurerm_resource_group.rg.location
-  virtual_machine_scale_set_name = "runners"
-  sku                            = "Standard_D2s_v3"
-  ssh_public_keys                = ["ssh-rsa AAAAB3NzaC1yc2EAAAADA....QFv2PJ0= marius@42device"]
-  subnet_id                      = azurerm_subnet.vmss.id
-  use_custom_subnet              = true
+  source                          = "amestofortytwo/selfhostedrunnervmss/azurerm"
+  operating_system                = "ubuntu"       # windows or ubuntu
+  runner_platform                 = "azure_devops" # azure_devops or github
+  resource_group_name             = azurerm_resource_group.rg.name
+  use_existing_resource_group     = true
+  location                        = azurerm_resource_group.rg.location
+  virtual_machine_scale_set_name  = "runners"
+  sku                             = "Standard_D2s_v3"
+  ssh_public_keys                 = ["ssh-rsa AAAAB3NzaC1yc2EAAAADA....QFv2PJ0= marius@42device"]
+  subnet_id                       = azurerm_subnet.vmss.id
+  use_custom_subnet               = true
+  vmss_encryption_at_host_enabled = true
 }
 
 output "password" {

@@ -73,17 +73,18 @@ resource "azurerm_subnet" "vmss" {
 }
 
 module "vmss" {
-  source                         = "amestofortytwo/selfhostedrunnervmss/azurerm"
-  operating_system               = "ubuntu"       # windows or ubuntu
-  runner_platform                = "azure_devops" # azure_devops or github
-  resource_group_name            = azurerm_resource_group.rg.name
-  use_existing_resource_group    = true
-  location                       = azurerm_resource_group.rg.location
-  virtual_machine_scale_set_name = "runners"
-  sku                            = "Standard_D2s_v3"
-  ssh_public_keys                = ["ssh-rsa AAAAB3NzaC1yc2EAAAADA....QFv2PJ0= marius@42device"]
-  subnet_id                      = azurerm_subnet.vmss.id
-  use_custom_subnet              = true
+  source                          = "amestofortytwo/selfhostedrunnervmss/azurerm"
+  operating_system                = "ubuntu"       # windows or ubuntu
+  runner_platform                 = "azure_devops" # azure_devops or github
+  resource_group_name             = azurerm_resource_group.rg.name
+  use_existing_resource_group     = true
+  location                        = azurerm_resource_group.rg.location
+  virtual_machine_scale_set_name  = "runners"
+  sku                             = "Standard_D2s_v3"
+  ssh_public_keys                 = ["ssh-rsa AAAAB3NzaC1yc2EAAAADA....QFv2PJ0= marius@42device"]
+  subnet_id                       = azurerm_subnet.vmss.id
+  use_custom_subnet               = true
+  vmss_encryption_at_host_enabled = true
 }
 
 output "password" {
@@ -95,7 +96,7 @@ output "password" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | n/a |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.73.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules
@@ -120,6 +121,7 @@ No modules.
 | <a name="input_use_existing_resource_group"></a> [use\_existing\_resource\_group](#input\_use\_existing\_resource\_group) | Whether to use an existing resource group or not | `bool` | `false` | no |
 | <a name="input_username"></a> [username](#input\_username) | Username of the local user account | `string` | `"runneradmin"` | no |
 | <a name="input_virtual_machine_scale_set_name"></a> [virtual\_machine\_scale\_set\_name](#input\_virtual\_machine\_scale\_set\_name) | n/a | `string` | `"self-hosted-runners"` | no |
+| <a name="input_vmss_encryption_at_host_enabled"></a> [vmss\_encryption\_at\_host\_enabled](#input\_vmss\_encryption\_at\_host\_enabled) | Enables encryption at host for the VMSS virtual machines. In order to use this option, the EncryptionAtHost feature must be enabled for Microsoft.Compue resource provider must be enabled for the subscription. To enable, use this PowerShell command: Register-AzProviderFeature -FeatureName 'EncryptionAtHost' -ProviderNamespace 'Microsoft.Compute'. | `bool` | `false` | no |
 
 ## Outputs
 
