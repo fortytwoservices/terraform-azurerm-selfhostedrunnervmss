@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.2.0...v1.3.0) (2023-11-14)
+
+
+### Features
+
+* Added optional parameter vmss_encryption_at_host_enabled ([6590865](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/65908659f76c29a4ba1a1301933bd08ce6832c4b))
+
 ## [1.2.0](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.1.6...v1.2.0) (2023-10-27)
 
 
