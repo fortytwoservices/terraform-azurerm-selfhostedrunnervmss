@@ -6,7 +6,7 @@ on:
     paths: [ "**.tf", "CHANGELOG.md"]
 
 permissions:
-  pull-request: write
+  pull-requests: write
   contents: read
 
 jobs:
