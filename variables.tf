@@ -87,3 +87,9 @@ variable "load_balancer_backend_address_pool_id" {
   type        = string
   default     = ""
 }
+
+variable "vmss_encryption_at_host_enabled" {
+  type        = bool
+  default     = false # Will be updated to default to true on next major release
+  description = "Enables encryption at host for the VMSS virtual machines. In order to use this option, the EncryptionAtHost feature must be enabled for Microsoft.Compue resource provider must be enabled for the subscription. To enable, use this PowerShell command: Register-AzProviderFeature -FeatureName 'EncryptionAtHost' -ProviderNamespace 'Microsoft.Compute'."
+}

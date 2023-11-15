@@ -54,6 +54,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
   tags                            = var.tags
   upgrade_mode                    = "Manual"
   overprovision                   = false
+  encryption_at_host_enabled      = var.vmss_encryption_at_host_enabled
 
   dynamic "admin_ssh_key" {
     for_each = var.ssh_public_keys
@@ -99,16 +100,17 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
 }
 
 resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
-  count               = var.operating_system == "windows" ? 1 : 0
-  name                = var.virtual_machine_scale_set_name
-  location            = var.location
-  resource_group_name = local.resource_group_name
-  sku                 = var.sku
-  instances           = 0
-  admin_username      = var.username
-  admin_password      = local.password
-  tags                = var.tags
-  upgrade_mode        = "Automatic"
+  count                      = var.operating_system == "windows" ? 1 : 0
+  name                       = var.virtual_machine_scale_set_name
+  location                   = var.location
+  resource_group_name        = local.resource_group_name
+  sku                        = var.sku
+  instances                  = 0
+  admin_username             = var.username
+  admin_password             = local.password
+  tags                       = var.tags
+  upgrade_mode               = "Automatic"
+  encryption_at_host_enabled = var.vmss_encryption_at_host_enabled
 
   source_image_reference {
     publisher = "amestofortytwoas1653635920536"
