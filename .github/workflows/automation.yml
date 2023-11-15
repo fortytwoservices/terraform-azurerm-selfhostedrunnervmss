@@ -1,7 +1,6 @@
 name: Automation
 on:
   pull_request:
-    types: [ "opened" ]
   push:
     branches: [ "main" ]
     paths: [ "**.tf", "CHANGELOG.md"]
@@ -28,6 +27,7 @@ jobs:
           working-dir: .
           git-push: "true"
           git-push-sign-off: "true"
+          config-file: ".terraform-docs.yml"
 
   terraform:
     if: github.event_name == 'push' || github.event_name == 'pull_request'
