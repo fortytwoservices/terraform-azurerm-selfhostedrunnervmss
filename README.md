@@ -128,6 +128,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_password"></a> [password](#output\_password) | n/a |
+| <a name="output_virtual_machine_scale_set_id"></a> [virtual\_machine\_scale\_set\_id](#output\_virtual\_machine\_scale\_set\_id) | n/a |
 
 ## Resources
 
