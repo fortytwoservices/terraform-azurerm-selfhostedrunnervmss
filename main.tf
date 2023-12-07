@@ -56,12 +56,17 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
   overprovision                   = false
   encryption_at_host_enabled      = var.vmss_encryption_at_host_enabled
 
+
   dynamic "admin_ssh_key" {
     for_each = var.ssh_public_keys
     content {
       public_key = admin_ssh_key.value
       username   = var.username
     }
+  }
+
+  boot_diagnostics {
+    storage_account_uri = null
   }
 
   plan {
@@ -117,6 +122,10 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
     offer     = local.image_offer
     sku       = local.image_sku
     version   = "latest"
+  }
+
+  boot_diagnostics {
+    storage_account_uri = null
   }
 
   plan {
