@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.3.0...v1.4.0) (2023-12-07)
+
+
+### Features
+
+* add parameter for runner group ([e63919f](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/e63919f9361571e138cebc5af4efc91810d13045))
+* add recommended value for boot diagnostic ([d2dd0da](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/d2dd0daf07e1e22bb125161c09d3f2d0a8d6d5e2))
+* output vmss id ([a0bf442](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/a0bf442249b229e95eee93362ce3e575678a0feb))
+
+
+### Bug Fixes
+
+* add runner user to docker group ([c60683e](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/c60683e49acd4d1b7cc57fab2f463590b29abd3d))
+
 ## [1.3.0](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.2.0...v1.3.0) (2023-11-14)
 
 
