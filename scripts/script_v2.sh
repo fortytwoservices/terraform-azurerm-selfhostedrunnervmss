@@ -237,8 +237,141 @@ fi
 ${prefix}./svc.sh install ${svc_user}
 ${prefix}./svc.sh start
 EOF100
+
+## Create the remove service file
+cat > remove-svc.sh << \EOF200 
+#/bin/bash
+
+set -e
+
+#
+# Removes a runner running as a service
+# Must be run on the machine where the service is run
+#
+# Examples:
+# RUNNER_CFG_PAT=<yourPAT> ./remove-svc.sh myuser/myrepo
+# RUNNER_CFG_PAT=<yourPAT> ./remove-svc.sh myorg
+#
+# Usage:
+#     export RUNNER_CFG_PAT=<yourPAT>
+#     ./remove-svc scope name
+#
+#      scope required  repo (:owner/:repo) or org (:organization)
+#      name  optional  defaults to hostname.  name to uninstall and remove
+# 
+# Notes:
+# PATS over envvars are more secure
+# Should be used on VMs and not containers
+# Works on OSX and Linux 
+# Assumes x64 arch
+#
+
+runner_scope=${1}
+runner_name=${2:-$(hostname)}
+
+echo "Uninstalling runner ${runner_name} @ ${runner_scope}"
+sudo echo
+
+function fatal()
+{
+   echo "error: $1" >&2
+   exit 1
+}
+
+if [ -z "${runner_scope}" ]; then fatal "supply scope as argument 1"; fi
+if [ -z "${RUNNER_CFG_PAT}" ]; then fatal "RUNNER_CFG_PAT must be set before calling"; fi
+
+which curl || fatal "curl required.  Please install in PATH with apt-get, brew, etc"
+which jq || fatal "jq required.  Please install in PATH with apt-get, brew, etc"
+
+runner_plat=linux
+[ ! -z "$(which sw_vers)" ] && runner_plat=osx;
+
+#--------------------------------------
+# Get a remove token
+#--------------------------------------
+echo
+echo "Generating a registration token..."
+
+base_api_url="https://api.github.com"
+if [ -n "${ghe_hostname}" ]; then
+    base_api_url="https://${ghe_hostname}/api/v3"
+fi
+
+# if the scope has a slash, it's a repo runner
+orgs_or_repos="orgs"
+runner_scope2=${runner_scope}
+if [[ "$runner_scope" == *enterprises\/* ]]; then
+    orgs_or_repos="enterprises"
+    runner_scope2=${runner_scope/enterprises\//}
+elif [[ "$runner_scope" == *\/* ]]; then
+    orgs_or_repos="repos"
+fi
+
+export RUNNER_TOKEN=$(curl -s -X POST ${base_api_url}/${orgs_or_repos}/${runner_scope2}/actions/runners/remove-token -H "accept: application/vnd.github.everest-preview+json" -H "authorization: token ${RUNNER_CFG_PAT}" | jq -r '.token')
+
+if [ "null" == "$RUNNER_TOKEN" -o -z "$RUNNER_TOKEN" ]; then fatal "Failed to get a token"; fi
+
+#---------------------------------------
+# Stop and uninstall the service
+#---------------------------------------
+echo
+echo "Uninstall the service ..."
+pushd ./runner
+prefix=""
+if [ "${runner_plat}" == "linux" ]; then 
+    prefix="sudo "
+fi 
+${prefix}./svc.sh stop
+${prefix}./svc.sh uninstall
+./config.sh remove --token $REMOVE_TOKEN
+EOF200
+
+## Create the monitor
+cat > monitor.sh << \EOF300 
+#/bin/bash
+
+set -e
+
+## Monitor the service
+# Azure Metadata Service endpoint
+endpoint="http://169.254.169.254/metadata/scheduledevents?api-version=2020-07-01"
+
+for i in {1..5}; do
+  # Make a request to the Azure Metadata Service
+  response=$(curl -s -H Metadata:true "$endpoint")
+
+  # Check if the response contains a termination event
+  if echo "$response" | grep -q "Terminate"; then
+    echo "Termination event detected"
+    eventid=$(echo "$response" | jq '[.Events | .[] | select(.EventType=="Terminate")][0] | .EventId')
+    # Perform any cleanup operations here
+
+    github_scope=$(cat ./runner/.runner | jq .gitHubUrl | cut -d/ -f 4- | tr -d '"')
+    github_pat=$(cat ./.github)
+
+    # Remove the runner
+    RUNNER_CFG_PAT=${github_pat} ./remove-svc.sh $github_scope
+
+    # Respond to the event
+    curl -s -H Metadata:true -X POST -d "{\"StartRequests\": [{\"EventId\": \"${eventid}\"}]}" "$endpoint"
+
+    break
+  else
+      echo "No termination event detected"
+  fi
+
+  # Wait for a while before the next request
+  sleep 10
+done
+EOF300
+
 chown $user:$user /home/$user/create-latest-svc.sh
+chown $user:$user /home/$user/remove-svc.sh
 chmod 750 /home/$user/create-latest-svc.sh
+chmod 750 /home/$user/remove-svc.sh
 usermod -a -G docker $user
+echo "${github_pat}" > /home/$user/.github
 
 RUNNER_CFG_PAT=${github_pat} "/home/$user/create-latest-svc.sh" -u $user ${runner_scope:+-s "$runner_scope"} ${labels:+-l "$labels"} ${runner_group:+-r "$runner_group"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
+touch /home/$user/.runner-done
