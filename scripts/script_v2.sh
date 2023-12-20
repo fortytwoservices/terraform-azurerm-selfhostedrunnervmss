@@ -343,12 +343,15 @@ endpoint="http://169.254.169.254/metadata/scheduledevents?api-version=2020-07-01
 for i in {1..5}; do
   # Make a request to the Azure Metadata Service
   response=$(curl -s -H Metadata:true "$endpoint")
+  instance_id=$(curl -s -H Metadata:true "$endpoint" | jq -r .compute.vmId)
+  echo "Instance ID: $instance_id"
 
   # Check if the response contains a termination event
-  if echo "$response" | grep -q "Terminate"; then
+  if (echo "$response" | grep -q "$instance_id") && (echo "$response" | grep -q "Terminate"); then
     echo "Termination event detected"
     eventid=$(echo "$response" | jq '[.Events | .[] | select(.EventType=="Terminate")][0] | .EventId' | tr -d '"')
     # Perform any cleanup operations here
+    # Get the VMSS instance ID
 
     github_scope=$(cat ./runner/.runner | jq .gitHubUrl | cut -d/ -f 4- | tr -d '"')
     github_pat=$(cat ./.github)
