@@ -1,6 +1,6 @@
 #!/bin/bash
 
-onexit(){ while caller $((n++)); do :; done; }
+onerr(){ while caller $((n++)); do :; done; }
 trap onerr ERR
 
 flags_found=false
@@ -22,7 +22,7 @@ shift "$((OPTIND - 1))"
 
 if ! "$flags_found"; then
     runner_scope=${1}
-    RUNNER_CFG_PAT=${2}
+    github_pat=${2}
     user=${3}
     labels=${4}
     runner_group=${5}
@@ -170,6 +170,7 @@ elif [[ "$runner_scope" == *\/* ]]; then
     orgs_or_repos="repos"
 fi
 
+echo "curl -s -X POST ${base_api_url}/${orgs_or_repos}/${runner_scope2}/actions/runners/registration-token"
 export RUNNER_TOKEN=$(curl -s -X POST ${base_api_url}/${orgs_or_repos}/${runner_scope2}/actions/runners/registration-token -H "accept: application/vnd.github.everest-preview+json" -H "authorization: token ${RUNNER_CFG_PAT}" | jq -r '.token')
 
 if [ "null" == "$RUNNER_TOKEN" -o -z "$RUNNER_TOKEN" ]; then fatal "Failed to get a token"; fi
@@ -241,4 +242,4 @@ chown $user:$user /home/$user/create-latest-svc.sh
 chmod 750 /home/$user/create-latest-svc.sh
 usermod -a -G docker $user
 
-RUNNER_CFG_PAT=${RUNNER_CFG_PAT} "/home/$user/create-latest-svc.sh" -u $user ${runner_scope:+-s \"$runner_scope\"} ${labels:+-l \"$labels\"} ${runner_group:+-r \"$runner_group\"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
+RUNNER_CFG_PAT=${github_pat} "/home/$user/create-latest-svc.sh" -u $user ${runner_scope:+-s \"$runner_scope\"} ${labels:+-l \"$labels\"} ${runner_group:+-r \"$runner_group\"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
