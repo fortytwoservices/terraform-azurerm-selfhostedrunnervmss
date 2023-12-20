@@ -344,7 +344,7 @@ for i in {1..5}; do
   # Check if the response contains a termination event
   if echo "$response" | grep -q "Terminate"; then
     echo "Termination event detected"
-    eventid=$(echo "$response" | jq '[.Events | .[] | select(.EventType=="Terminate")][0] | .EventId')
+    eventid=$(echo "$response" | jq '[.Events | .[] | select(.EventType=="Terminate")][0] | .EventId' | tr -d '"')
     # Perform any cleanup operations here
 
     github_scope=$(cat ./runner/.runner | jq .gitHubUrl | cut -d/ -f 4- | tr -d '"')
@@ -361,17 +361,28 @@ for i in {1..5}; do
       echo "No termination event detected"
   fi
 
+  # Check if a process is running and a file exists
+  if ! pgrep -x "runner" > /dev/null && [ -f "./.runner-done" ]; then
+      echo "Process is not running and file exists"
+  fi
+
   # Wait for a while before the next request
   sleep 10
 done
 EOF300
 
-chown $user:$user /home/$user/create-latest-svc.sh
-chown $user:$user /home/$user/remove-svc.sh
-chmod 750 /home/$user/create-latest-svc.sh
-chmod 750 /home/$user/remove-svc.sh
+chown $user:$user ./create-latest-svc.sh
+chown $user:$user ./remove-svc.sh
+chown $user:$user ./monitor.sh
+chmod 750 ./create-latest-svc.sh
+chmod 750 ./remove-svc.sh
+chmod 750 ./monitor.sh
 usermod -a -G docker $user
-echo "${github_pat}" > /home/$user/.github
+echo "${github_pat}" > ./.github
+chown $user:$user ./.github
+chmod 600 ./.github
 
-RUNNER_CFG_PAT=${github_pat} "/home/$user/create-latest-svc.sh" -u $user ${runner_scope:+-s "$runner_scope"} ${labels:+-l "$labels"} ${runner_group:+-r "$runner_group"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
-touch /home/$user/.runner-done
+RUNNER_CFG_PAT=${github_pat} "./create-latest-svc.sh" -u $user ${runner_scope:+-s "$runner_scope"} ${labels:+-l "$labels"} ${runner_group:+-r "$runner_group"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
+touch ./.runner-done
+chown $user:$user ./.runner-done
+chmod 600 ./.runner-done
