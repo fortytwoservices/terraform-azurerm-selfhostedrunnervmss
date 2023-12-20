@@ -333,6 +333,9 @@ cat > monitor.sh << \EOF300
 
 set -e
 
+basedir=$(dirname "$0")
+cd "$basedir"
+
 ## Monitor the service
 # Azure Metadata Service endpoint
 endpoint="http://169.254.169.254/metadata/scheduledevents?api-version=2020-07-01"
@@ -381,6 +384,8 @@ usermod -a -G docker $user
 echo "${github_pat}" > ./.github
 chown $user:$user ./.github
 chmod 600 ./.github
+
+(crontab -u $user -l; echo "* * * * * /home/$user/monitor.sh") | crontab -u $user -
 
 RUNNER_CFG_PAT=${github_pat} "./create-latest-svc.sh" -u $user ${runner_scope:+-s "$runner_scope"} ${labels:+-l "$labels"} ${runner_group:+-r "$runner_group"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
 touch ./.runner-done
