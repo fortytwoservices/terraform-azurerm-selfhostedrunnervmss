@@ -8,10 +8,10 @@ flags_found=false
 while getopts 's:g:n:r:u:l:df' opt; do
     flags_found=true
     case $opt in
-    s) runner_scope=$OPTARG;; # scope: repo (:owner/:repo), org (:organization), or ent (enterprises/:enterprise)
-    r) runner_group=$OPTARG;;
-    u) user=$OPTARG;;
-    l) labels=$OPTARG;;
+    s) runner_scope="${OPTARG}";; # scope: repo (:owner/:repo), org (:organization), or ent (enterprises/:enterprise)
+    r) runner_group="${OPTARG}";;
+    u) user="${OPTARG}";;
+    l) labels="${OPTARG}";;
     f) replace='true';;
     d) disableupdate='true';;
     e) ephemeral='true';;
@@ -27,7 +27,7 @@ if ! "$flags_found"; then
     labels=${4}
     runner_group=${5}
 fi
-
+echo "runner_scope: $runner_scope"
 cd /home/$user
 
 ## Create the service file
