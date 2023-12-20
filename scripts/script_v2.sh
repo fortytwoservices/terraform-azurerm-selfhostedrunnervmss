@@ -339,12 +339,14 @@ cd "$basedir"
 ## Monitor the service
 # Azure Metadata Service endpoint
 endpoint="http://169.254.169.254/metadata/scheduledevents?api-version=2020-07-01"
+instance_endpoint="http://169.254.169.254/metadata/instance?api-version=2020-09-01"
+instance_id=$(curl -s -H Metadata:true "$instance_endpoint" | jq -r .compute.name)
+echo "Instance ID: $instance_id"
 
 for i in {1..5}; do
   # Make a request to the Azure Metadata Service
   response=$(curl -s -H Metadata:true "$endpoint")
-  instance_id=$(curl -s -H Metadata:true "$endpoint" | jq -r .compute.vmId)
-  echo "Instance ID: $instance_id"
+
 
   # Check if the response contains a termination event
   if (echo "$response" | grep -q "$instance_id") && (echo "$response" | grep -q "Terminate"); then
@@ -368,7 +370,7 @@ for i in {1..5}; do
   fi
 
   # Check if a process is running and a file exists
-  if ! pgrep -x "runner" > /dev/null && [ -f "./.runner-done" ]; then
+  if ! pgrep -x "Runner.Listener" > /dev/null && [ -f "./.runner-done" ]; then
       echo "Process is not running and file exists"
   fi
 
