@@ -344,7 +344,7 @@ instance_endpoint="http://169.254.169.254/metadata/instance?api-version=2020-09-
 instance_id=$(curl -s -H Metadata:true "$instance_endpoint" | jq -r .compute.name)
 echo "Instance ID: $instance_id"
 
-for i in {1..2}; do
+for i in {1..4}; do
   # Make a request to the Azure Metadata Service
   response=$(curl -s -H Metadata:true "$endpoint")
 
@@ -374,10 +374,13 @@ for i in {1..2}; do
   # Check if a process is running and a file exists
   if ! pgrep -x "Runner.Listener" > /dev/null && [ -f "./.runner-done" ]; then
       echo "Process is not running and file exists"
+      sudo shutdown -r now
+  else
+      echo "Process is running or file does not exist"
   fi
 
   # Wait for a while before the next request
-  sleep 20
+  sleep 10
 done
 EOF300
 
@@ -392,7 +395,7 @@ echo "${github_pat}" > ./.github
 chown $user:$user ./.github
 chmod 600 ./.github
 
-(crontab -u $user -l; echo "* * * * * /home/$user/monitor.sh >> /home/$user/monitor.sh.log 2>&1") | crontab -u $user -
+(crontab -u $user -l; echo "* * * * * /bin/bash /home/$user/monitor.sh >> /home/$user/monitor.sh.log 2>&1") | crontab -u $user -
 
 RUNNER_CFG_PAT=${github_pat} "./create-latest-svc.sh" -u $user ${runner_scope:+-s "$runner_scope"} ${labels:+-l "$labels"} ${runner_group:+-r "$runner_group"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
 touch ./.runner-done
