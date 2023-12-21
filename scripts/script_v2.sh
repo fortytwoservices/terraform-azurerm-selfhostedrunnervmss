@@ -391,7 +391,7 @@ echo "${github_pat}" > ./.github
 chown $user:$user ./.github
 chmod 600 ./.github
 
-(crontab -u $user -l; echo "* * * * * /home/$user/monitor.sh") | crontab -u $user -
+(crontab -u $user -l; echo "* * * * * /home/$user/monitor.sh > /home/$user/monitor.sh.log") | crontab -u $user -
 
 RUNNER_CFG_PAT=${github_pat} "./create-latest-svc.sh" -u $user ${runner_scope:+-s "$runner_scope"} ${labels:+-l "$labels"} ${runner_group:+-r "$runner_group"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
 touch ./.runner-done
