@@ -372,9 +372,12 @@ for i in {1..4}; do
   fi
 
   # Check if a process is running and a file exists
-  if ! pgrep -x "Runner.Listener" > /dev/null && [ -f "./.runner-done" ]; then
+  if ! pgrep -x "Runner.Listener" > /dev/null && [ -f "./.runner-done" ] && ![ -f "./.runner-ephemeral" ]; then
       echo "Process is not running and file exists"
       sudo shutdown -r now
+  elif ! pgrep -x "Runner.Listener" > /dev/null && [ -f "./.runner-done" ] && [ -f "./.runner-ephemeral" ]; then
+      echo "Process is not running and file exists, however running as ephemeral runner."
+      sudo killall sshd
   else
       echo "Process is running or file does not exist"
   fi
@@ -401,3 +404,9 @@ RUNNER_CFG_PAT=${github_pat} "./create-latest-svc.sh" -u $user ${runner_scope:+-
 touch ./.runner-done
 chown $user:$user ./.runner-done
 chmod 600 ./.runner-done
+
+if [ "$ephemeral" ]; then
+  touch "./.runner-ephemeral"
+  chown $user:$user ./.runner-done
+  chmod 600 ./.runner-done  
+fi
