@@ -344,13 +344,13 @@ instance_endpoint="http://169.254.169.254/metadata/instance?api-version=2020-09-
 instance_id=$(curl -s -H Metadata:true "$instance_endpoint" | jq -r .compute.name)
 echo "Instance ID: $instance_id"
 
-for i in {1..5}; do
+for i in {1..2}; do
   # Make a request to the Azure Metadata Service
   response=$(curl -s -H Metadata:true "$endpoint")
 
 
   # Check if the response contains a termination event
-  if (echo "$response" | grep -q "$instance_id") && (echo "$response" | grep -q "Terminate"); then
+  if (echo "$response" | grep -q "$instance_id") && (echo "$response" | grep -q "Terminate") && [ ! -f "./.runner-kill" ]; then
     echo "Termination event detected"
     eventid=$(echo "$response" | jq -r "[.Events | .[] | select((.EventType==\"Terminate\") and (.Resources[] | contains(\"$instance_id\")))][0] | .EventId" | tr -d '"')
     # Perform any cleanup operations here
@@ -364,6 +364,7 @@ for i in {1..5}; do
 
     # Respond to the event
     curl -s -H Metadata:true -X POST -d "{\"StartRequests\": [{\"EventId\": \"${eventid}\"}]}" "$endpoint"
+    touch ./.runner-kill
 
     break
   else
@@ -376,7 +377,7 @@ for i in {1..5}; do
   fi
 
   # Wait for a while before the next request
-  sleep 10
+  sleep 20
 done
 EOF300
 
@@ -391,7 +392,7 @@ echo "${github_pat}" > ./.github
 chown $user:$user ./.github
 chmod 600 ./.github
 
-(crontab -u $user -l; echo "* * * * * /home/$user/monitor.sh > /home/$user/monitor.sh.log 2>&1") | crontab -u $user -
+(crontab -u $user -l; echo "* * * * * /home/$user/monitor.sh >> /home/$user/monitor.sh.log 2>&1") | crontab -u $user -
 
 RUNNER_CFG_PAT=${github_pat} "./create-latest-svc.sh" -u $user ${runner_scope:+-s "$runner_scope"} ${labels:+-l "$labels"} ${runner_group:+-r "$runner_group"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
 touch ./.runner-done
