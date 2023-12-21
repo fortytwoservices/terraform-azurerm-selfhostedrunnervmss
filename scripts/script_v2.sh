@@ -332,6 +332,7 @@ cat > monitor.sh << \EOF300
 #/bin/bash
 
 set -e
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 basedir=$(dirname "$0")
 cd "$basedir"
