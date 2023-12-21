@@ -28,6 +28,10 @@ if ! "$flags_found"; then
     runner_group=${5}
 fi
 
+if "$flags_found"; then
+    github_pat=${github_pat:-$RUNNER_CFG_PAT}
+fi
+
 cd /home/$user
 
 ## Create the service file
