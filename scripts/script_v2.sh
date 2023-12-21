@@ -351,7 +351,7 @@ for i in {1..5}; do
   # Check if the response contains a termination event
   if (echo "$response" | grep -q "$instance_id") && (echo "$response" | grep -q "Terminate"); then
     echo "Termination event detected"
-    eventid=$(echo "$response" | jq '[.Events | .[] | select(.EventType=="Terminate")][0] | .EventId' | tr -d '"')
+    eventid=$(echo "$response" | jq -r "[.Events | .[] | select((.EventType==\"Terminate\") and (.Resources[] | contains(\"$instance_id\")))][0] | .EventId" | tr -d '"')
     # Perform any cleanup operations here
     # Get the VMSS instance ID
 
