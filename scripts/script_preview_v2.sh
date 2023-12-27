@@ -404,6 +404,8 @@ chmod 600 ./.github
 
 (crontab -u $user -l; echo "* * * * * /bin/bash /home/$user/monitor.sh >> /home/$user/monitor.sh.log 2>&1") | crontab -u $user -
 
+find /opt/post-generation -mindepth 1 -maxdepth 1 -type f -name '*.sh' -exec bash {} \;
+
 RUNNER_CFG_PAT=${github_pat} "./create-latest-svc.sh" -u $user ${runner_scope:+-s "$runner_scope"} ${labels:+-l "$labels"} ${runner_group:+-r "$runner_group"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
 touch ./.runner-done
 chown $user:$user ./.runner-done
