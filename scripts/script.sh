@@ -1,7 +1,6 @@
 #!/bin/bash
 
-onerr(){ while caller $((n++)); do :; done; }
-trap onerr ERR
+set -e
 
 flags_found=false
 
@@ -376,7 +375,7 @@ for i in {1..4}; do
   fi
 
   # Check if a process is running and a file exists
-  if ! pgrep -x "Runner.Listener" > /dev/null && [ -f "./.runner-done" ] && ![ -f "./.runner-ephemeral" ]; then
+  if ! pgrep -x "Runner.Listener" > /dev/null && [ -f "./.runner-done" ] && [ ! -f "./.runner-ephemeral" ]; then
       echo "Process is not running and file exists"
       sudo shutdown -r now
   elif ! pgrep -x "Runner.Listener" > /dev/null && [ -f "./.runner-done" ] && [ -f "./.runner-ephemeral" ]; then
