@@ -24,12 +24,13 @@ param (
 
 # Change to runner under programdata
 Set-Location -Path "C:\ProgramData\runner"
+$runnerurl = "https://github.com/$runnerscope"
 
 # Unzip archive *.zip
 Expand-Archive -Path "C:\ProgramData\runner\actions-runner-win-x64-*.zip" -DestinationPath "C:\ProgramData\runner"
 
 # Run command config.cmd
-& .\config.cmd --unattended --url $runnerscope --pat $githubpat --WindowsLogonAccount $user --WindowsLogonPassword $userpassword --replace --disableupdate --runasservice
+& .\config.cmd --unattended --url $runnerurl --pat $githubpat --WindowsLogonAccount $user --WindowsLogonPassword $userpassword --replace --disableupdate --runasservice
 
 # Start service
 Start-Service actions.runner.*
