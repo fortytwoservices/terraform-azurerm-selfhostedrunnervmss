@@ -401,8 +401,6 @@ echo "${github_pat}" > ./.github
 chown $user:$user ./.github
 chmod 600 ./.github
 
-(crontab -u $user -l; echo "* * * * * /bin/bash /home/$user/monitor.sh >> /home/$user/monitor.sh.log 2>&1") | crontab -u $user -
-
 find /opt/post-generation -mindepth 1 -maxdepth 1 -type f -name '*.sh' -exec bash {} \;
 
 RUNNER_CFG_PAT=${github_pat} /bin/bash "./create-latest-svc.sh" -u $user ${runner_scope:+-s "$runner_scope"} ${labels:+-l "$labels"} ${runner_group:+-r "$runner_group"} ${ephemeral:+-e} ${replace:+-f} ${disableupdate:+-d}
@@ -410,8 +408,10 @@ touch ./.runner-done
 chown $user:$user ./.runner-done
 chmod 600 ./.runner-done
 
+(crontab -u $user -l; echo "* * * * * /bin/bash /home/$user/monitor.sh >> /home/$user/monitor.sh.log 2>&1") | crontab -u $user -
+
 if [ "$ephemeral" ]; then
   touch "./.runner-ephemeral"
-  chown $user:$user ./.runner-done
-  chmod 600 ./.runner-done  
+  chown $user:$user ./.runner-ephemeral
+  chmod 600 ./.runner-ephemeral  
 fi
