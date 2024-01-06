@@ -408,7 +408,7 @@ touch ./.runner-done
 chown $user:$user ./.runner-done
 chmod 600 ./.runner-done
 
-(crontab -u $user -l 2>/dev/null; echo "* * * * * /bin/bash /home/$user/monitor.sh >> /home/$user/monitor.sh.log 2>&1") | crontab -u $user -
+(crontab -u $user -l 2>/dev/null || true; echo "* * * * * /bin/bash /home/$user/monitor.sh >> /home/$user/monitor.sh.log 2>&1") | crontab -u $user -
 
 if [ "$ephemeral" ]; then
   touch "./.runner-ephemeral"
