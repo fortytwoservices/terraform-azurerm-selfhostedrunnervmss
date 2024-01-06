@@ -30,7 +30,7 @@ Expand-Archive -Path "C:\ProgramData\runner\actions-runner-win-x64-*.zip" -Desti
 # Build the argument list and configure the Github Actions Runner
 $argList = @("--unattended", "--url", $runnerurl, "--pat", $githubpat, "--WindowsLogonAccount", $user, "--WindowsLogonPassword", $userpassword, "--runasservice")
 
-if ($null -eq $noreplace) {
+if ($noreplace -eq $false) {
     $argList += "--replace"
 }
 if ($null -ne $labels) {
@@ -41,10 +41,10 @@ if ($null -ne $runner_group) {
     $argList += "--runnergroup"
     $argList += $runner_group
 }
-if ($null -eq $enableupdate) {
+if ($enableupdate -eq $false) {
     $argList += "--disableupdate"
 }
-if ($null -ne $ephemeral) {
+if ($ephemeral) {
     $argList += "--ephemeral"
 }
 
