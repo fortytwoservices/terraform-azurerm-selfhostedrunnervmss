@@ -4,6 +4,7 @@ param (
     [string]$runnerscope,
     [string]$runnergroup,
     [string]$user,
+    [string]$userpassword,
     [string]$labels,
     [switch]$replace,
     [switch]$disableupdate,
@@ -28,7 +29,7 @@ Set-Location -Path "C:\ProgramData\runner"
 Expand-Archive -Path "C:\ProgramData\runner\actions-runner-win-x64-*.zip" -DestinationPath "C:\ProgramData\runner"
 
 # Run command config.cmd
-& .\config.cmd --unattended --url $runnerscope --pat $githubpat --labels $labels --replace $replace --disableupdate $disableupdate --ephemeral $ephemeral --runasservice
+& .\config.cmd --unattended --url $runnerscope --pat $githubpat --WindowsLogonAccount $user --WindowsLogonPassword $userpassword --replace --disableupdate --runasservice
 
 # Start service
 Start-Service actions.runner.*
