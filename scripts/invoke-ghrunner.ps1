@@ -22,17 +22,13 @@ param (
 
 # Set-Content -Path create-latest-svc.ps1 -Value $scriptContent
 
-# Change to runner under programdata
 Set-Location -Path "C:\ProgramData\runner"
 $runnerurl = "https://github.com/$runnerscope"
 
-# Unzip archive *.zip
 Expand-Archive -Path "C:\ProgramData\runner\actions-runner-win-x64-*.zip" -DestinationPath "C:\ProgramData\runner"
 
-# Initialize the argument list with mandatory arguments
 $argList = @("--unattended", "--url", $runnerurl, "--pat", $githubpat, "--WindowsLogonAccount", $user, "--WindowsLogonPassword", $userpassword, "--runasservice")
 
-# Add optional arguments based on conditions
 if ($null -eq $replace || $replace) {
     $argList += "--replace"
 }
@@ -51,13 +47,12 @@ if ($null -ne $ephemeral) {
     $argList += "--ephemeral"
 }
 
-# Run the config.cmd script with the argument list
 Start-Process -FilePath .\config.cmd -ArgumentList $argList -NoNewWindow -Wait
 
-#Get-ChildItem C:\post-generation -Filter *.ps1 | ForEach-Object { & $_.FullName }
+$securePassword = ConvertTo-SecureString $userpassword -AsPlainText -Force
+$credential = New-Object System.Management.Automation.PSCredential $user, $securePassword
+Start-Process Notepad.exe -Credential $credential
 
-# Run command config.cmd
-# & .\config.cmd --unattended --url $runnerurl --pat $githubpat --WindowsLogonAccount $user --WindowsLogonPassword $userpassword --replace --disableupdate --runasservice
+Get-ChildItem C:\post-generation -Filter *.ps1 | ForEach-Object { Start-Process $_.FullName -Credential $credential }
 
-# Start service
 Start-Service actions.runner.*
