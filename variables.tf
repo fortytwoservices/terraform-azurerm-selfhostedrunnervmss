@@ -93,3 +93,15 @@ variable "vmss_encryption_at_host_enabled" {
   default     = false # Will be updated to default to true on next major release
   description = "Enables encryption at host for the VMSS virtual machines. In order to use this option, the EncryptionAtHost feature must be enabled for Microsoft.Compue resource provider must be enabled for the subscription. To enable, use this PowerShell command: Register-AzProviderFeature -FeatureName 'EncryptionAtHost' -ProviderNamespace 'Microsoft.Compute'."
 }
+
+variable "enable_termination_notifications" {
+  type        = bool
+  default     = false # Will be updated to default to true on next major release
+  description = "Enable termination notifications for the VMSS. This will send a notification to the Azure Instance Metadata Service (IMDS) when the VMSS is scheduled for maintenance or when the VMSS is deleted."
+}
+
+variable "enable_automatic_instance_repair" {
+  type        = bool
+  default     = false # Will be updated to default to true on next major release
+  description = "Enable automatic instance repair for the VMSS. This will automatically repair instances that fail health checks."
+}

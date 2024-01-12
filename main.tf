@@ -82,6 +82,42 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
     version   = "latest"
   }
 
+  dynamic "termination_notification" {
+    for_each = var.enable_termination_notifications ? [1] : []
+    content {
+      enabled = true
+      timeout = "PT5M"
+    }
+  }
+
+  dynamic "automatic_instance_repair" {
+    for_each = var.enable_automatic_instance_repair ? [1] : []
+    content {
+      enabled      = true
+      grace_period = "PT10M"
+    }
+  }
+
+  dynamic "extension" {
+    for_each = var.enable_automatic_instance_repair ? [1] : []
+    content {
+      name                 = "HealthExtension"
+      publisher            = "Microsoft.ManagedServices"
+      type                 = "ApplicationHealthLinux"
+      type_handler_version = "1.0"
+
+      settings = <<SETTINGS
+      {
+        "protocol": "tcp",
+        "port": 22,
+        "intervalInSeconds": 5,
+        "numberOfProbes": 1
+      }
+      SETTINGS
+    }
+
+  }
+
   os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
