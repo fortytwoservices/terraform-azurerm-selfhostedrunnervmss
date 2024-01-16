@@ -124,8 +124,9 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
   }
 
   network_interface {
-    name    = "${var.virtual_machine_scale_set_name}-nic"
-    primary = true
+    name                          = "${var.virtual_machine_scale_set_name}-nic"
+    primary                       = true
+    enable_accelerated_networking = var.enable_accelerated_networking
 
     ip_configuration {
       name                                   = "internal"
@@ -176,8 +177,9 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
   }
 
   network_interface {
-    name    = "${var.virtual_machine_scale_set_name}-nic"
-    primary = true
+    name                          = "${var.virtual_machine_scale_set_name}-nic"
+    primary                       = true
+    enable_accelerated_networking = var.enable_accelerated_networking
 
     ip_configuration {
       name                                   = "internal"

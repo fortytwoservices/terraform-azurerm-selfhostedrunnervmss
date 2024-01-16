@@ -105,3 +105,9 @@ variable "enable_automatic_instance_repair" {
   default     = false # Will be updated to default to true on next major release
   description = "Enable automatic instance repair for the VMSS. This will automatically repair instances that fail health checks."
 }
+
+variable "enable_accelerated_networking" {
+  type        = bool
+  default     = false
+  description = "(Optional) Does this Network Interface support Accelerated Networking? Possible values are true and false. Defaults to false."  
+}
