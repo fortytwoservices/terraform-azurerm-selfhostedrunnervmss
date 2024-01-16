@@ -150,7 +150,8 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
   admin_username             = var.username
   admin_password             = local.password
   tags                       = var.tags
-  upgrade_mode               = "Automatic"
+  upgrade_mode               = "Manual"
+  overprovision              = false
   encryption_at_host_enabled = var.vmss_encryption_at_host_enabled
 
   source_image_reference {
