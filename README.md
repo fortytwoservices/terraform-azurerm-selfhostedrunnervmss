@@ -107,6 +107,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_enable_accelerated_networking"></a> [enable\_accelerated\_networking](#input\_enable\_accelerated\_networking) | (Optional) Does this Network Interface support Accelerated Networking? Possible values are true and false. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_automatic_instance_repair"></a> [enable\_automatic\_instance\_repair](#input\_enable\_automatic\_instance\_repair) | Enable automatic instance repair for the VMSS. This will automatically repair instances that fail health checks. | `bool` | `false` | no |
 | <a name="input_enable_termination_notifications"></a> [enable\_termination\_notifications](#input\_enable\_termination\_notifications) | Enable termination notifications for the VMSS. This will send a notification to the Azure Instance Metadata Service (IMDS) when the VMSS is scheduled for maintenance or when the VMSS is deleted. | `bool` | `false` | no |
 | <a name="input_load_balancer_backend_address_pool_id"></a> [load\_balancer\_backend\_address\_pool\_id](#input\_load\_balancer\_backend\_address\_pool\_id) | (Optional) Value of the backend address pool id to use for the load balancer. I.e. for static outbound NAT. | `string` | `""` | no |
