@@ -109,5 +109,5 @@ variable "enable_automatic_instance_repair" {
 variable "enable_accelerated_networking" {
   type        = bool
   default     = false
-  description = "(Optional) Does this Network Interface support Accelerated Networking? Possible values are true and false. Defaults to false."  
+  description = "(Optional) Does this Network Interface support Accelerated Networking? Possible values are true and false. Defaults to false."
 }
