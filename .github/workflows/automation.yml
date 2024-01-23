@@ -48,5 +48,5 @@ jobs:
         with:
           token: ${{ secrets.MARVIN_PAT }}
           release-type: terraform-module
-          signoff: "Marvin <117985362+4t2-marvin@users.noreply.github.com>"
-          #prerelease: true
+          # signoff: "Marvin <117985362+4t2-marvin@users.noreply.github.com>"
+          # prerelease: true
