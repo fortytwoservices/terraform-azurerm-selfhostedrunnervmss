@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.5.0...v1.5.1) (2024-04-17)
+
+
+### Bug Fixes
+
+* Default to west europe ([e5557b0](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/commit/e5557b0f93c40d3ba833eb3afc7a7dd0aa08aa3e))
+
 ## [1.5.0](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.4.0...v1.5.0) (2024-01-16)
 
 
