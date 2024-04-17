@@ -4,7 +4,7 @@ provider "azurerm" {
 
 # Create custom rg
 resource "azurerm_resource_group" "rg" {
-  location = "norwayeast"
+  location = "westeurope"
   name     = "runners"
 }
 
