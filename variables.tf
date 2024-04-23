@@ -111,3 +111,9 @@ variable "enable_accelerated_networking" {
   default     = false
   description = "(Optional) Does this Network Interface support Accelerated Networking? Possible values are true and false. Defaults to false."
 }
+
+variable "deploy_load_balancer" {
+  type        = bool
+  default     = false
+  description = "(Optional) When using the built-in network (use_custom_subnet is false), should we create a NAT gateway? This will be required in the future. Defaults to false."
+}

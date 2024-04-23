@@ -3,6 +3,8 @@ locals {
   image_offer         = var.runner_platform == "azure_devops" ? "self_hosted_runner_ado" : "self_hosted_runner_github"
   image_sku           = "${var.operating_system}-latest"
   password            = var.password != null ? var.password : random_password.password[0].result
+
+  load_balancer_backend_address_pool_ids = var.load_balancer_backend_address_pool_id != "" ? [var.load_balancer_backend_address_pool_id] : (!var.use_custom_subnet && var.deploy_load_balancer ? [azurerm_lb_backend_address_pool.load_balancer[0].id] : null)
 }
 
 resource "random_password" "password" {
@@ -132,7 +134,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
       name                                   = "internal"
       primary                                = true
       subnet_id                              = var.subnet_id != null ? var.subnet_id : azurerm_subnet.vmss[0].id
-      load_balancer_backend_address_pool_ids = var.load_balancer_backend_address_pool_id != "" ? [var.load_balancer_backend_address_pool_id] : null
+      load_balancer_backend_address_pool_ids = local.load_balancer_backend_address_pool_ids
     }
   }
 
@@ -186,11 +188,53 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
       name                                   = "internal"
       primary                                = true
       subnet_id                              = var.subnet_id != null ? var.subnet_id : azurerm_subnet.vmss[0].id
-      load_balancer_backend_address_pool_ids = var.load_balancer_backend_address_pool_id != "" ? [var.load_balancer_backend_address_pool_id] : null
+      load_balancer_backend_address_pool_ids = local.load_balancer_backend_address_pool_ids
     }
   }
 
   lifecycle {
     ignore_changes = [tags, automatic_os_upgrade_policy, instances, overprovision, single_placement_group]
+  }
+}
+
+# Public IP address for NAT gateway
+resource "azurerm_public_ip" "load_balancer_pip" {
+  count               = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
+  name                = "${var.virtual_machine_scale_set_name}-lb-pip"
+  location            = var.location
+  resource_group_name = local.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
+# Load balancer
+resource "azurerm_lb" "load_balancer" {
+  count               = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
+  name                = "${var.virtual_machine_scale_set_name}-lb"
+  location            = var.location
+  resource_group_name = local.resource_group_name
+  sku                 = "Standard"
+
+  frontend_ip_configuration {
+    name                 = "PublicIPAddress"
+    public_ip_address_id = azurerm_public_ip.load_balancer_pip[0].id
+  }
+}
+
+resource "azurerm_lb_backend_address_pool" "load_balancer" {
+  count           = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
+  loadbalancer_id = azurerm_lb.load_balancer[0].id
+  name            = "backend"
+}
+
+resource "azurerm_lb_outbound_rule" "outbound_rule" {
+  count                   = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
+  name                    = "OutboundRule"
+  loadbalancer_id         = azurerm_lb.load_balancer[0].id
+  protocol                = "All"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.load_balancer[0].id
+
+  frontend_ip_configuration {
+    name = "PublicIPAddress"
   }
 }
