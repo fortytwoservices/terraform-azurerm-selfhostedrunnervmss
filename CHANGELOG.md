@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.5.1...v1.6.0) (2024-04-23)
+
+
+### Features
+
+* Add deploy_load_balancer parameter and functionality for outbound load balancer as NAT for built-in networking ([6ff4c24](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/6ff4c24b2ba89847a31325fe2ec30633f159b8b0))
+
 ## [1.5.1](https://github.com/amestofortytwo/terraform-azurerm-selfhostedrunnervmss/compare/v1.5.0...v1.5.1) (2024-04-17)
 
 
