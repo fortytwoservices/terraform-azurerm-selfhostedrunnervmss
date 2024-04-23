@@ -34,9 +34,10 @@ provider "azurerm" {
 }
 
 module "vmss" {
-  source           = "amestofortytwo/selfhostedrunnervmss/azurerm"
-  operating_system = "ubuntu"       # windows or ubuntu
-  runner_platform  = "azure_devops" # azure_devops or github
+  source               = "amestofortytwo/selfhostedrunnervmss/azurerm"
+  operating_system     = "ubuntu"       # windows or ubuntu
+  runner_platform      = "azure_devops" # azure_devops or github
+  deploy_load_balancer = true
 }
 
 output "password" {
@@ -107,6 +108,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_deploy_load_balancer"></a> [deploy\_load\_balancer](#input\_deploy\_load\_balancer) | (Optional) When using the built-in network (use\_custom\_subnet is false), should we create a NAT gateway? This will be required in the future. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_accelerated_networking"></a> [enable\_accelerated\_networking](#input\_enable\_accelerated\_networking) | (Optional) Does this Network Interface support Accelerated Networking? Possible values are true and false. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_automatic_instance_repair"></a> [enable\_automatic\_instance\_repair](#input\_enable\_automatic\_instance\_repair) | Enable automatic instance repair for the VMSS. This will automatically repair instances that fail health checks. | `bool` | `false` | no |
 | <a name="input_enable_termination_notifications"></a> [enable\_termination\_notifications](#input\_enable\_termination\_notifications) | Enable termination notifications for the VMSS. This will send a notification to the Azure Instance Metadata Service (IMDS) when the VMSS is scheduled for maintenance or when the VMSS is deleted. | `bool` | `false` | no |
@@ -137,7 +139,11 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [azurerm_lb.load_balancer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb) | resource |
+| [azurerm_lb_backend_address_pool.load_balancer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb_backend_address_pool) | resource |
+| [azurerm_lb_outbound_rule.outbound_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb_outbound_rule) | resource |
 | [azurerm_linux_virtual_machine_scale_set.self_hosted_runners](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine_scale_set) | resource |
+| [azurerm_public_ip.load_balancer_pip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_subnet.vmss](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azurerm_virtual_network.vmss](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) | resource |
