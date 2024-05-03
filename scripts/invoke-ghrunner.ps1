@@ -38,7 +38,7 @@ if ($null -ne $labels) {
     $argList += "--labels"
     $argList += $labels
 }
-if ($null -ne $runner_group) {
+if ($null -ne $runnergroup) {
     $argList += "--runnergroup"
     $argList += $runnergroup
 }
