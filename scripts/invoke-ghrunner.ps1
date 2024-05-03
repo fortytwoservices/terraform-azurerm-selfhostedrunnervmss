@@ -40,7 +40,7 @@ if ($null -ne $labels) {
 }
 if ($null -ne $runner_group) {
     $argList += "--runnergroup"
-    $argList += $runner_group
+    $argList += $runnergroup
 }
 if ($enableupdate -eq $false) {
     $argList += "--disableupdate"
