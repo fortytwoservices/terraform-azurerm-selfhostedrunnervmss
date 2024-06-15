@@ -2,7 +2,7 @@ version: ">= 0.15.0"
 
 formatter: markdown
 
-header-from: readme-header.md
+header-from: main.tf
 footer-from: ""
 
 sections:
@@ -18,18 +18,10 @@ content: |-
 
   {{ .Requirements }}
 
-  ## Examples
-
-  ### Minimum
+  ## Example
 
   ```hcl
-  {{ include "examples/Minimum/main.tf" }}
-  ```
-
-  ### Advanced
-
-  ```hcl
-  {{ include "examples/Advanced/main.tf" }}
+  {{ include "examples/main.tf" }}
   ```
 
   {{ .Providers }}
