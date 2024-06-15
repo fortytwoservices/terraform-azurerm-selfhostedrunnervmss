@@ -34,3 +34,9 @@ override.tf.json
 terraform.rc
 *.terraform.lock.hcl
 *.terraform.lock.hcl
+*.md.tmp
+*tfplan*
+.DS_Store
+.idea
+.terraform.lock.hcl
+README-generated.md
