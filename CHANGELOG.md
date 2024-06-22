@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.6.0...v1.7.0) (2024-06-22)
+
+
+### Features
+
+* add support for github hostname in powershell for windows ([3aed96f](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/3aed96f584b3a9ba6bf449072564a61bdce8203a))
+
+
+### Bug Fixes
+
+* another place of typo `runnergroup` ([402fe6a](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/402fe6af548f74cf4f6cd9005bcbddb36ab2a2c6))
+* fix typo for invoking runner group in windows env ([51226bb](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/51226bb990822e427676cb70a4621bb0e7251b51))
+* grept apply ([5101ad5](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/5101ad577b2b382c07dbffee16cc839c6893a9cd))
+
 ## [1.6.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.5.1...v1.6.0) (2024-04-23)
 
 
