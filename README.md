@@ -23,7 +23,11 @@ After deploying the virtual machine scale set, you need to configure the Azure D
 <!-- markdownlint-disable MD033 -->
 ## Requirements
 
-No requirements.
+The following requirements are needed by this module:
+
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (3.114.0)
+
+- <a name="requirement_random"></a> [random](#requirement\_random) (3.6.2)
 
 ## Examples
 
@@ -122,24 +126,24 @@ output "password" {
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.114.0)
 
-- <a name="provider_random"></a> [random](#provider\_random)
+- <a name="provider_random"></a> [random](#provider\_random) (3.6.2)
 
 ## Resources
 
 The following resources are used by this module:
 
-- [azurerm_lb.load_balancer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb) (resource)
-- [azurerm_lb_backend_address_pool.load_balancer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb_backend_address_pool) (resource)
-- [azurerm_lb_outbound_rule.outbound_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb_outbound_rule) (resource)
-- [azurerm_linux_virtual_machine_scale_set.self_hosted_runners](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine_scale_set) (resource)
-- [azurerm_public_ip.load_balancer_pip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) (resource)
-- [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
-- [azurerm_subnet.vmss](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) (resource)
-- [azurerm_virtual_network.vmss](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) (resource)
-- [azurerm_windows_virtual_machine_scale_set.self_hosted_runners](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/windows_virtual_machine_scale_set) (resource)
-- [random_password.password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)
+- [azurerm_lb.load_balancer](https://registry.terraform.io/providers/hashicorp/azurerm/3.114.0/docs/resources/lb) (resource)
+- [azurerm_lb_backend_address_pool.load_balancer](https://registry.terraform.io/providers/hashicorp/azurerm/3.114.0/docs/resources/lb_backend_address_pool) (resource)
+- [azurerm_lb_outbound_rule.outbound_rule](https://registry.terraform.io/providers/hashicorp/azurerm/3.114.0/docs/resources/lb_outbound_rule) (resource)
+- [azurerm_linux_virtual_machine_scale_set.self_hosted_runners](https://registry.terraform.io/providers/hashicorp/azurerm/3.114.0/docs/resources/linux_virtual_machine_scale_set) (resource)
+- [azurerm_public_ip.load_balancer_pip](https://registry.terraform.io/providers/hashicorp/azurerm/3.114.0/docs/resources/public_ip) (resource)
+- [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.114.0/docs/resources/resource_group) (resource)
+- [azurerm_subnet.vmss](https://registry.terraform.io/providers/hashicorp/azurerm/3.114.0/docs/resources/subnet) (resource)
+- [azurerm_virtual_network.vmss](https://registry.terraform.io/providers/hashicorp/azurerm/3.114.0/docs/resources/virtual_network) (resource)
+- [azurerm_windows_virtual_machine_scale_set.self_hosted_runners](https://registry.terraform.io/providers/hashicorp/azurerm/3.114.0/docs/resources/windows_virtual_machine_scale_set) (resource)
+- [random_password.password](https://registry.terraform.io/providers/hashicorp/random/3.6.2/docs/resources/password) (resource)
 
 <!-- markdownlint-disable MD013 -->
 ## Required Inputs
