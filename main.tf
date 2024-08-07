@@ -120,6 +120,15 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
 
   }
 
+  dynamic "identity" {
+    for_each = var.identity != null ? [1] : []
+
+    content {
+      type         = var.identity.type
+      identity_ids = var.identity.identity_ids
+    }
+  }
+
   os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
@@ -172,6 +181,15 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
     publisher = "amestofortytwoas1653635920536"
     product   = local.image_offer
     name      = local.image_sku
+  }
+
+  dynamic "identity" {
+    for_each = var.identity != null ? [1] : []
+
+    content {
+      type         = var.identity.type
+      identity_ids = var.identity.identity_ids
+    }
   }
 
   os_disk {

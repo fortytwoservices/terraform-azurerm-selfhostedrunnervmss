@@ -14,7 +14,7 @@ provider "azurerm" {
 }
 
 module "vmss" {
-  source               = "amestofortytwo/selfhostedrunnervmss/azurerm"
+  source               = "fortytwoservices/selfhostedrunnervmss/azurerm"
   version              = "1.6.0"
   operating_system     = "ubuntu"       # windows or ubuntu
   runner_platform      = "azure_devops" # azure_devops or github
