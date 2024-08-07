@@ -125,7 +125,7 @@ variable "identity" {
   })
 
   validation {
-    condition     = contains([["SystemAssigned"], ["UserAssigned"], ["SystemAssigned, UserAssigned"]], var.identity.type)
+    condition     = contains(["SystemAssigned", "UserAssigned", "SystemAssigned, UserAssigned"], var.identity.type)
     error_message = "Valid values for Type is 'UserAssigned', 'SystemAssigned' or 'SystemAssigned, UserAssigned."
   }
 
