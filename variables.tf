@@ -117,3 +117,18 @@ variable "deploy_load_balancer" {
   default     = false
   description = "(Optional) When using the built-in network (use_custom_subnet is false), should we create a NAT gateway? This will be required in the future. Defaults to false."
 }
+
+variable "identity" {
+  type = object({
+    type         = string
+    identity_ids = optional(list(string))
+  })
+
+  validation {
+    condition     = contains(["SystemAssigned", "UserAssigned", "SystemAssigned, UserAssigned"], var.identity.type)
+    error_message = "Valid values for Type is 'UserAssigned', 'SystemAssigned' or 'SystemAssigned, UserAssigned."
+  }
+
+  default     = null
+  description = "(Optional) If SystemAssigned, UserAssigned or both should be enabled for the Virtual Machine Scale Set"
+}
