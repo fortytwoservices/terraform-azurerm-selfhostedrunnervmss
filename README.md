@@ -182,6 +182,21 @@ Type: `bool`
 
 Default: `false`
 
+### <a name="input_identity"></a> [identity](#input\_identity)
+
+Description: (Optional) If SystemAssigned, UserAssigned or both should be enabled for the Virtual Machine Scale Set
+
+Type:
+
+```hcl
+object({
+    type         = string
+    identity_ids = optional(list(string))
+  })
+```
+
+Default: `null`
+
 ### <a name="input_load_balancer_backend_address_pool_id"></a> [load\_balancer\_backend\_address\_pool\_id](#input\_load\_balancer\_backend\_address\_pool\_id)
 
 Description: (Optional) Value of the backend address pool id to use for the load balancer. I.e. for static outbound NAT.
