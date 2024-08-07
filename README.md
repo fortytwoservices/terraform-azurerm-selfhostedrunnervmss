@@ -25,6 +25,8 @@ After deploying the virtual machine scale set, you need to configure the Azure D
 
 The following requirements are needed by this module:
 
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 1.5.0)
+
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (3.114.0)
 
 - <a name="requirement_random"></a> [random](#requirement\_random) (3.6.2)
