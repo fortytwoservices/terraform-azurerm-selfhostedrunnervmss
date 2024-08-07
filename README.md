@@ -122,9 +122,9 @@ output "password" {
 
 The following providers are used by this module:
 
-- azurerm
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm)
 
-- random
+- <a name="provider_random"></a> [random](#provider\_random)
 
 ## Resources
 
@@ -150,7 +150,7 @@ No required inputs.
 
 The following input variables are optional (have default values):
 
-### deploy\_load\_balancer
+### <a name="input_deploy_load_balancer"></a> [deploy\_load\_balancer](#input\_deploy\_load\_balancer)
 
 Description: (Optional) When using the built-in network (use\_custom\_subnet is false), should we create a NAT gateway? This will be required in the future. Defaults to false.
 
@@ -158,7 +158,7 @@ Type: `bool`
 
 Default: `false`
 
-### enable\_accelerated\_networking
+### <a name="input_enable_accelerated_networking"></a> [enable\_accelerated\_networking](#input\_enable\_accelerated\_networking)
 
 Description: (Optional) Does this Network Interface support Accelerated Networking? Possible values are true and false. Defaults to false.
 
@@ -166,7 +166,7 @@ Type: `bool`
 
 Default: `false`
 
-### enable\_automatic\_instance\_repair
+### <a name="input_enable_automatic_instance_repair"></a> [enable\_automatic\_instance\_repair](#input\_enable\_automatic\_instance\_repair)
 
 Description: Enable automatic instance repair for the VMSS. This will automatically repair instances that fail health checks.
 
@@ -174,7 +174,7 @@ Type: `bool`
 
 Default: `false`
 
-### enable\_termination\_notifications
+### <a name="input_enable_termination_notifications"></a> [enable\_termination\_notifications](#input\_enable\_termination\_notifications)
 
 Description: Enable termination notifications for the VMSS. This will send a notification to the Azure Instance Metadata Service (IMDS) when the VMSS is scheduled for maintenance or when the VMSS is deleted.
 
@@ -182,7 +182,7 @@ Type: `bool`
 
 Default: `false`
 
-### load\_balancer\_backend\_address\_pool\_id
+### <a name="input_load_balancer_backend_address_pool_id"></a> [load\_balancer\_backend\_address\_pool\_id](#input\_load\_balancer\_backend\_address\_pool\_id)
 
 Description: (Optional) Value of the backend address pool id to use for the load balancer. I.e. for static outbound NAT.
 
@@ -190,7 +190,7 @@ Type: `string`
 
 Default: `""`
 
-### location
+### <a name="input_location"></a> [location](#input\_location)
 
 Description: The Azure region to create the scale set in
 
@@ -198,7 +198,7 @@ Type: `string`
 
 Default: `"westeurope"`
 
-### operating\_system
+### <a name="input_operating_system"></a> [operating\_system](#input\_operating\_system)
 
 Description: The OS of the runners
 
@@ -206,7 +206,7 @@ Type: `string`
 
 Default: `"ubuntu"`
 
-### password
+### <a name="input_password"></a> [password](#input\_password)
 
 Description: Password of the local user acocunt
 
@@ -214,7 +214,7 @@ Type: `string`
 
 Default: `null`
 
-### resource\_group\_name
+### <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name)
 
 Description: The resource group name to create
 
@@ -222,7 +222,7 @@ Type: `string`
 
 Default: `"self-hosted-runners"`
 
-### runner\_platform
+### <a name="input_runner_platform"></a> [runner\_platform](#input\_runner\_platform)
 
 Description: Whether it is github or azure\_devops used for runners
 
@@ -230,7 +230,7 @@ Type: `string`
 
 Default: `"azure_devops"`
 
-### sku
+### <a name="input_sku"></a> [sku](#input\_sku)
 
 Description: The sku to create virtual machines with
 
@@ -238,7 +238,7 @@ Type: `string`
 
 Default: `"Standard_D2s_v3"`
 
-### ssh\_public\_keys
+### <a name="input_ssh_public_keys"></a> [ssh\_public\_keys](#input\_ssh\_public\_keys)
 
 Description: n/a
 
@@ -246,7 +246,7 @@ Type: `list(string)`
 
 Default: `[]`
 
-### subnet\_id
+### <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id)
 
 Description: When provided, this subnet will be used for the scale set, rather than creating a new virtual network and subnet
 
@@ -254,7 +254,7 @@ Type: `string`
 
 Default: `null`
 
-### tags
+### <a name="input_tags"></a> [tags](#input\_tags)
 
 Description: n/a
 
@@ -262,7 +262,7 @@ Type: `map(any)`
 
 Default: `{}`
 
-### use\_custom\_subnet
+### <a name="input_use_custom_subnet"></a> [use\_custom\_subnet](#input\_use\_custom\_subnet)
 
 Description: Set to true if subnet\_id is provided in order to actually use it (works around a TF issue)
 
@@ -270,7 +270,7 @@ Type: `bool`
 
 Default: `false`
 
-### use\_existing\_resource\_group
+### <a name="input_use_existing_resource_group"></a> [use\_existing\_resource\_group](#input\_use\_existing\_resource\_group)
 
 Description: Whether to use an existing resource group or not
 
@@ -278,7 +278,7 @@ Type: `bool`
 
 Default: `false`
 
-### username
+### <a name="input_username"></a> [username](#input\_username)
 
 Description: Username of the local user account
 
@@ -286,7 +286,7 @@ Type: `string`
 
 Default: `"runneradmin"`
 
-### virtual\_machine\_scale\_set\_name
+### <a name="input_virtual_machine_scale_set_name"></a> [virtual\_machine\_scale\_set\_name](#input\_virtual\_machine\_scale\_set\_name)
 
 Description: n/a
 
@@ -294,7 +294,7 @@ Type: `string`
 
 Default: `"self-hosted-runners"`
 
-### vmss\_encryption\_at\_host\_enabled
+### <a name="input_vmss_encryption_at_host_enabled"></a> [vmss\_encryption\_at\_host\_enabled](#input\_vmss\_encryption\_at\_host\_enabled)
 
 Description: Enables encryption at host for the VMSS virtual machines. In order to use this option, the EncryptionAtHost feature must be enabled for Microsoft.Compue resource provider must be enabled for the subscription. To enable, use this PowerShell command: Register-AzProviderFeature -FeatureName 'EncryptionAtHost' -ProviderNamespace 'Microsoft.Compute'.
 
@@ -306,14 +306,17 @@ Default: `false`
 
 The following outputs are exported:
 
-### password
+### <a name="output_password"></a> [password](#output\_password)
 
 Description: n/a
 
-### virtual\_machine\_scale\_set\_id
+### <a name="output_virtual_machine_scale_set_id"></a> [virtual\_machine\_scale\_set\_id](#output\_virtual\_machine\_scale\_set\_id)
 
 Description: n/a
 
+### <a name="output_virtual_machine_scale_set_identity_principal_id"></a> [virtual\_machine\_scale\_set\_identity\_principal\_id](#output\_virtual\_machine\_scale\_set\_identity\_principal\_id)
+
+Description: n/a
 
 ## Modules
 
