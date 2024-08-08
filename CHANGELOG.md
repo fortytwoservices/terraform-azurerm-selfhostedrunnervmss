@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.7.1...v1.7.2) (2024-08-08)
+
+
+### Bug Fixes
+
+* remove condition on identity variable ([cd331c9](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/cd331c932615acf582c621e518a3183bc02cd7b9))
+
 ## [1.7.1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.7.0...v1.7.1) (2024-08-08)
 
 
