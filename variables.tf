@@ -124,11 +124,6 @@ variable "identity" {
     identity_ids = optional(list(string))
   })
 
-  validation {
-    condition     = contains(["SystemAssigned", "UserAssigned", "SystemAssigned, UserAssigned"], var.identity.type)
-    error_message = "Valid values for Type is 'UserAssigned', 'SystemAssigned' or 'SystemAssigned, UserAssigned."
-  }
-
   default     = null
   description = "(Optional) If SystemAssigned, UserAssigned or both should be enabled for the Virtual Machine Scale Set"
 }
