@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.7.0...v1.7.1) (2024-08-08)
+
+
+### Bug Fixes
+
+* added check to identity output to check if identity is enabled, and outputs a string saying it's not enabled if its not. ([388d539](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/388d5396a762283081ccf02ba6ea5693746b0870))
+* fixed value reference for identity principal id output ([a7392b4](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/a7392b403a250e1455dfab9512fe8e085f6bf17f))
+
 ## [1.7.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.6.0...v1.7.0) (2024-08-07)
 
 
