@@ -323,6 +323,14 @@ Type: `bool`
 
 Default: `false`
 
+### <a name="input_network_security_group_id"></a> [network\_security\_group\_id](#input\_network\_security\_group\_id)
+
+Description: Network security group id. The default is null (no security group).
+
+Type: `string`
+
+Default: `null`
+
 ## Outputs
 
 The following outputs are exported:
