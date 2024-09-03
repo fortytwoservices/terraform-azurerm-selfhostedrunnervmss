@@ -127,3 +127,10 @@ variable "identity" {
   default     = null
   description = "(Optional) If SystemAssigned, UserAssigned or both should be enabled for the Virtual Machine Scale Set"
 }
+
+variable "network_security_group_id" {
+  type = string
+  default = null
+  description = "(Optional) Use an existing security group. Defaults to null."
+  nullable = true
+}
