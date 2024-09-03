@@ -129,8 +129,8 @@ variable "identity" {
 }
 
 variable "network_security_group_id" {
-  type = string
-  default = null
-  description = "(Optional) Use an existing security group. Defaults to null."
-  nullable = true
+  type        = string
+  default     = null
+  description = "(Optional) Use an existing security group on the VMSS network interface card. Defaults to null."
+  nullable    = true
 }
