@@ -219,6 +219,14 @@ Type: `string`
 
 Default: `"westeurope"`
 
+### <a name="input_network_security_group_id"></a> [network\_security\_group\_id](#input\_network\_security\_group\_id)
+
+Description: (Optional) Use an existing security group on the VMSS network interface card. Defaults to null.
+
+Type: `string`
+
+Default: `null`
+
 ### <a name="input_operating_system"></a> [operating\_system](#input\_operating\_system)
 
 Description: The OS of the runners
@@ -322,14 +330,6 @@ Description: Enables encryption at host for the VMSS virtual machines. In order 
 Type: `bool`
 
 Default: `false`
-
-### <a name="input_network_security_group_id"></a> [network\_security\_group\_id](#input\_network\_security\_group\_id)
-
-Description: Network security group id. The default is null (no security group).
-
-Type: `string`
-
-Default: `null`
 
 ## Outputs
 
