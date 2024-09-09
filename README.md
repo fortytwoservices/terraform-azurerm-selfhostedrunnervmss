@@ -221,7 +221,7 @@ Default: `"westeurope"`
 
 ### <a name="input_network_security_group_id"></a> [network\_security\_group\_id](#input\_network\_security\_group\_id)
 
-Description: (Optional) Use an existing security group on the VMSS network interface card. Defaults to null.
+Description: (Optional) Use an existing network security group on the VMSS network interface card. Defaults to null.
 
 Type: `string`
 
