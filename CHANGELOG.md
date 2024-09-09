@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.7.2...v1.8.2) (2024-09-09)
+
+
+### Features
+
+* update readme docs ([29f5e43](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/29f5e43a06458731b53e91d9a4e5f1800e8981eb))
+
+
+### Miscellaneous Chores
+
+* release 1.8.2 ([f77fbd1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/f77fbd147578165f655f82b7623f78eb064a0bb9))
+
 ## [1.7.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.7.1...v1.7.2) (2024-08-08)
 
 
