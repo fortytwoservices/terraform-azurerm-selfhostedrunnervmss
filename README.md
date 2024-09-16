@@ -339,6 +339,10 @@ The following outputs are exported:
 
 Description: n/a
 
+### <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id)
+
+Description: n/a
+
 ### <a name="output_virtual_machine_scale_set_id"></a> [virtual\_machine\_scale\_set\_id](#output\_virtual\_machine\_scale\_set\_id)
 
 Description: n/a
