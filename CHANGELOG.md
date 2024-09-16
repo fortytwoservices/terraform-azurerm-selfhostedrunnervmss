@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.8.2...v1.9.0) (2024-09-16)
+
+
+### Features
+
+* Add subnet_id as output ([330f7ce](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/330f7ce33971f78ebc1369a159164e4ceecd070c))
+* Ignore changes for managed subnet service_endpoints (Cannot add as input variable, as some people may already be using this feature) ([b02fd88](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/b02fd88f23308ab7d8c4d040e035e768e74ec054))
+
 ## [1.8.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.7.2...v1.8.2) (2024-09-09)
 
 
