@@ -41,6 +41,12 @@ resource "azurerm_subnet" "vmss" {
   resource_group_name  = local.resource_group_name
   virtual_network_name = azurerm_virtual_network.vmss[0].name
   address_prefixes     = azurerm_virtual_network.vmss[0].address_space
+
+  lifecycle {
+    ignore_changes = [
+      service_endpoints,
+    ]
+  }
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
