@@ -1,6 +1,9 @@
 <!-- BEGIN_TF_DOCS -->
 # Self Hosted Runners Virtual Machine Scale Set
 
+> [!NOTE]  
+> Due to the renaming of Company, the Github organization has changed name from "amestofortytwo" to "fortytwoservices". Pre-existing Terraform code would need to change that in code.
+
 This module deploys a virtual machine scale set for self hosted runners for Azure DevOps and GitHub.
 
 ```hcl
