@@ -262,6 +262,24 @@ Type: `string`
 
 Default: `"azure_devops"`
 
+### <a name="input_scale_in"></a> [scale\_in](#input\_scale\_in)
+
+Description: object({  
+  force\_deletion\_enabled = (Optional) If true, the VMSS will force delete the VM instance when it is being scaled in. Defaults to false.  
+  rule                   = (Optional) Scale-in policy for the VMSS. If not provided, the default scale-in policy will be used. Possible values are Default, NewestVM, OldestVM, and Custom. Defaults to Default.
+})
+
+Type:
+
+```hcl
+object({
+    force_deletion_enabled = optional(bool, false)
+    rule                   = optional(string, "Default")
+  })
+```
+
+Default: `null`
+
 ### <a name="input_sku"></a> [sku](#input\_sku)
 
 Description: The sku to create virtual machines with
