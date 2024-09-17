@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.9.0...v1.10.0) (2024-09-17)
+
+
+### Features
+
+* add support for scale_in parameter ([820d534](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/820d534da382324befcde9a074c140e805479779))
+
 ## [1.9.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.8.2...v1.9.0) (2024-09-16)
 
 
