@@ -90,6 +90,14 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
     version   = "latest"
   }
 
+  dynamic "scale_in" {
+    for_each = var.scale_in != null ? [1] : []
+    content {
+      force_deletion_enabled = scale_in.value.force_deletion_enabled
+      rule                   = scale_in.value.rule
+    }
+  }
+
   dynamic "termination_notification" {
     for_each = var.enable_termination_notifications ? [1] : []
     content {
@@ -215,6 +223,14 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
       primary                                = true
       subnet_id                              = var.subnet_id != null ? var.subnet_id : azurerm_subnet.vmss[0].id
       load_balancer_backend_address_pool_ids = local.load_balancer_backend_address_pool_ids
+    }
+  }
+
+  dynamic "scale_in" {
+    for_each = var.scale_in != null ? [1] : []
+    content {
+      force_deletion_enabled = scale_in.value.force_deletion_enabled
+      rule                   = scale_in.value.rule
     }
   }
 
