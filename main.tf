@@ -229,8 +229,8 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
   dynamic "scale_in" {
     for_each = var.scale_in != null ? [1] : []
     content {
-      force_deletion_enabled = scale_in.value.force_deletion_enabled
-      rule                   = scale_in.value.rule
+      force_deletion_enabled = var.scale_in.force_deletion_enabled
+      rule                   = var.scale_in.rule
     }
   }
 
