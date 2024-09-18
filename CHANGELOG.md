@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.10.0...v1.10.1) (2024-09-18)
+
+
+### Bug Fixes
+
+* correct scale_in parameter values ([88f7c66](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/88f7c6608e64ee1cf19b0cc3efac104722036e03))
+
 ## [1.10.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.9.0...v1.10.0) (2024-09-17)
 
 
