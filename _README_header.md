@@ -1,5 +1,9 @@
 # Self Hosted Runners Virtual Machine Scale Set
 
+| :exclamation:  NB! |
+|---|
+| Due to the renaming of Company, the Github organization has changed name from "amestofortytwo" to "fortytwoservices". Pre-existing Terraform code would need to change that in code. |
+
 This module deploys a virtual machine scale set for self hosted runners for Azure DevOps and GitHub.
 
 ```hcl
@@ -8,7 +12,7 @@ provider "azurerm" {
 }
 
 module "vmss" {
-  source                         = "amestofortytwo/selfhostedrunnervmss/azurerm"
+  source                         = "fortytwoservices/selfhostedrunnervmss/azurerm"
   operating_system               = "ubuntu"       # windows or ubuntu
   runner_platform                = "azure_devops" # azure_devops or github
 }

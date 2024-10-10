@@ -117,3 +117,33 @@ variable "deploy_load_balancer" {
   default     = false
   description = "(Optional) When using the built-in network (use_custom_subnet is false), should we create a NAT gateway? This will be required in the future. Defaults to false."
 }
+
+variable "identity" {
+  type = object({
+    type         = string
+    identity_ids = optional(list(string))
+  })
+  default     = null
+  description = "(Optional) If SystemAssigned, UserAssigned or both should be enabled for the Virtual Machine Scale Set"
+}
+
+variable "scale_in" {
+  type = object({
+    force_deletion_enabled = optional(bool, false)
+    rule                   = optional(string, "Default")
+  })
+  default     = null
+  description = <<-EOF
+    object({
+      force_deletion_enabled = (Optional) If true, the VMSS will force delete the VM instance when it is being scaled in. Defaults to false.
+      rule                   = (Optional) Scale-in policy for the VMSS. If not provided, the default scale-in policy will be used. Possible values are Default, NewestVM, OldestVM, and Custom. Defaults to Default.
+    })
+  EOF
+}
+
+variable "network_security_group_id" {
+  type        = string
+  default     = null
+  description = "(Optional) Use an existing network security group on the VMSS network interface card. Defaults to null."
+  nullable    = true
+}

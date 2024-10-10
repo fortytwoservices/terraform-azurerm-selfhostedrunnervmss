@@ -41,6 +41,12 @@ resource "azurerm_subnet" "vmss" {
   resource_group_name  = local.resource_group_name
   virtual_network_name = azurerm_virtual_network.vmss[0].name
   address_prefixes     = azurerm_virtual_network.vmss[0].address_space
+
+  lifecycle {
+    ignore_changes = [
+      service_endpoints,
+    ]
+  }
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
@@ -84,6 +90,14 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
     version   = "latest"
   }
 
+  dynamic "scale_in" {
+    for_each = var.scale_in != null ? [1] : []
+    content {
+      force_deletion_enabled = var.scale_in.force_deletion_enabled
+      rule                   = var.scale_in.rule
+    }
+  }
+
   dynamic "termination_notification" {
     for_each = var.enable_termination_notifications ? [1] : []
     content {
@@ -120,6 +134,15 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
 
   }
 
+  dynamic "identity" {
+    for_each = var.identity != null ? [1] : []
+
+    content {
+      type         = var.identity.type
+      identity_ids = var.identity.identity_ids
+    }
+  }
+
   os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
@@ -129,6 +152,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
     name                          = "${var.virtual_machine_scale_set_name}-nic"
     primary                       = true
     enable_accelerated_networking = var.enable_accelerated_networking
+    network_security_group_id     = var.network_security_group_id
 
     ip_configuration {
       name                                   = "internal"
@@ -174,6 +198,15 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
     name      = local.image_sku
   }
 
+  dynamic "identity" {
+    for_each = var.identity != null ? [1] : []
+
+    content {
+      type         = var.identity.type
+      identity_ids = var.identity.identity_ids
+    }
+  }
+
   os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
@@ -183,12 +216,21 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
     name                          = "${var.virtual_machine_scale_set_name}-nic"
     primary                       = true
     enable_accelerated_networking = var.enable_accelerated_networking
+    network_security_group_id     = var.network_security_group_id
 
     ip_configuration {
       name                                   = "internal"
       primary                                = true
       subnet_id                              = var.subnet_id != null ? var.subnet_id : azurerm_subnet.vmss[0].id
       load_balancer_backend_address_pool_ids = local.load_balancer_backend_address_pool_ids
+    }
+  }
+
+  dynamic "scale_in" {
+    for_each = var.scale_in != null ? [1] : []
+    content {
+      force_deletion_enabled = var.scale_in.force_deletion_enabled
+      rule                   = var.scale_in.rule
     }
   }
 

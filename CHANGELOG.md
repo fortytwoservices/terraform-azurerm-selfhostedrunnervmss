@@ -1,5 +1,87 @@
 # Changelog
 
+## [1.10.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.10.1...v1.10.2) (2024-09-18)
+
+
+### Bug Fixes
+
+* correct scale_in on linux vmss ([31d7f68](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/31d7f686258c7b9e361db86af4c4e276eebb3740))
+
+## [1.10.1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.10.0...v1.10.1) (2024-09-18)
+
+
+### Bug Fixes
+
+* correct scale_in parameter values ([88f7c66](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/88f7c6608e64ee1cf19b0cc3efac104722036e03))
+
+## [1.10.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.9.0...v1.10.0) (2024-09-17)
+
+
+### Features
+
+* add support for scale_in parameter ([820d534](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/820d534da382324befcde9a074c140e805479779))
+
+## [1.9.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.8.2...v1.9.0) (2024-09-16)
+
+
+### Features
+
+* Add subnet_id as output ([330f7ce](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/330f7ce33971f78ebc1369a159164e4ceecd070c))
+* Ignore changes for managed subnet service_endpoints (Cannot add as input variable, as some people may already be using this feature) ([b02fd88](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/b02fd88f23308ab7d8c4d040e035e768e74ec054))
+
+## [1.8.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.7.2...v1.8.2) (2024-09-09)
+
+
+### Features
+
+* update readme docs ([29f5e43](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/29f5e43a06458731b53e91d9a4e5f1800e8981eb))
+
+
+### Miscellaneous Chores
+
+* release 1.8.2 ([f77fbd1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/f77fbd147578165f655f82b7623f78eb064a0bb9))
+
+## [1.7.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.7.1...v1.7.2) (2024-08-08)
+
+
+### Bug Fixes
+
+* remove condition on identity variable ([cd331c9](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/cd331c932615acf582c621e518a3183bc02cd7b9))
+
+## [1.7.1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.7.0...v1.7.1) (2024-08-08)
+
+
+### Bug Fixes
+
+* added check to identity output to check if identity is enabled, and outputs a string saying it's not enabled if its not. ([388d539](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/388d5396a762283081ccf02ba6ea5693746b0870))
+* fixed value reference for identity principal id output ([a7392b4](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/a7392b403a250e1455dfab9512fe8e085f6bf17f))
+
+## [1.7.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.6.0...v1.7.0) (2024-08-07)
+
+
+### Features
+
+* add support for github hostname in powershell for windows ([3aed96f](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/3aed96f584b3a9ba6bf449072564a61bdce8203a))
+* added optional input for the VMSS identity block, and added dynamic identity block to windows and linux vmss ([4ee5522](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/4ee552222df9d7f5839041fb83db4cd3a24e96ac))
+* added output of VMSS identity principal id ([ecbc4ef](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/ecbc4ef3b4390a03feed2735a722650d1779d9c8))
+* added required terraform version ([70ee192](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/70ee1921d136741f3114de77ef709cecb0ba0bfe))
+* added terraform block with required providers and versions to satisfy the lint gods ([60905a4](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/60905a4d4b19dbeacf22a5e75b37f9120bd0c412))
+
+
+### Bug Fixes
+
+* another place of typo `runnergroup` ([402fe6a](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/402fe6af548f74cf4f6cd9005bcbddb36ab2a2c6))
+* fix typo for invoking runner group in windows env ([51226bb](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/51226bb990822e427676cb70a4621bb0e7251b51))
+* fixed identity variable input validation ([e634cd0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/e634cd0420a2ffbbd22a2fff70ef7c665c398c95))
+* fixed syntax in input variable validation ([09330f7](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/09330f734e6a10071c314467475ad2fed38fe4c7))
+* fixed syntax issue in required providers ([b8db829](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/b8db829aef3175f7b86af4e595f90d98086218b7))
+* grept apply ([57b138b](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/57b138bcf73a08bb68b857c375742d8783919cd2))
+* grept apply ([f144dd7](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/f144dd7aaa76d65dea144e1a67c44c18fb7610cd))
+* grept apply ([3628dc5](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/3628dc591a76095afac0970673a5821d9fceaa5d))
+* grept apply ([60e7344](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/60e73444b10c881c73dd0c9a56a0e7c985881318))
+* grept apply ([5101ad5](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/5101ad577b2b382c07dbffee16cc839c6893a9cd))
+* updated required versions ([76fad23](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/76fad23ef8cf657357dfadda123eeb4b20f0eb76))
+
 ## [1.6.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.5.1...v1.6.0) (2024-04-23)
 
 
