@@ -4,15 +4,17 @@ set -e
 
 flags_found=false
 
-while getopts 's:g:n:r:u:l:df' opt; do
+while getopts 's:g:n:r:u:l:dfe' opt; do
     flags_found=true
     case $opt in
     s) runner_scope="${OPTARG}";; # scope: repo (:owner/:repo), org (:organization), or ent (enterprises/:enterprise)
+    g) ghe_hostname="${OPTARG}";;
+    n) runner_name="${OPTARG}";;
     r) runner_group="${OPTARG}";;
     u) user="${OPTARG}";;
     l) labels="${OPTARG}";;
-    f) replace='true';;
     d) disableupdate='true';;
+    f) replace='true';;
     e) ephemeral='true';;
     esac
 done
@@ -50,7 +52,7 @@ set -e
 
 flags_found=false
 
-while getopts 's:g:n:r:u:l:df' opt; do
+while getopts 's:g:n:r:u:l:dfe' opt; do
     flags_found=true
 
     case $opt in
@@ -72,11 +74,11 @@ while getopts 's:g:n:r:u:l:df' opt; do
     l)
         labels=$OPTARG
         ;;
-    f)
-        replace='true'
-        ;;
     d)
         disableupdate='true'
+        ;;
+    f)
+        replace='true'
         ;;
     e)
         ephemeral='true'
@@ -97,7 +99,8 @@ Usage:
     -u          optional  user svc will run as, defaults to current
     -l          optional  list of labels (split by comma) applied on the runner
     -d          optional  allow runner to remain on the current version for one month after the release of a newer version
-    -f          optional  replace any existing runner with the same name"
+    -f          optional  replace any existing runner with the same name
+    -e          optional  ephemeral runners"
         exit 0
         ;;
     esac
