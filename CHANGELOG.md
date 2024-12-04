@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.11.2 (2024-12-04)
+
+
+### Features
+
+* add parameter for os disk size ([5b3741b](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/5b3741b1ba5c0bebb8c33b75dc1a17b7101d4466))
+
+### Miscellaneous Chores
+
+* release 1.11.2 ([f77fbd1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/f77fbd147578165f655f82b7623f78eb064a0bb9))
+
 ## [1.10.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.10.1...v1.10.2) (2024-09-18)
 
 
