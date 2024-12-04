@@ -14,4 +14,3 @@ output "virtual_machine_scale_set_identity_principal_id" {
 output "subnet_id" {
   value = var.subnet_id != null ? var.subnet_id : azurerm_subnet.vmss[0].id
 }
-
