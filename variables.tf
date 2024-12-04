@@ -59,6 +59,12 @@ variable "sku" {
   description = "The sku to create virtual machines with"
 }
 
+variable "os_disk_size_gb" {
+  type        = number
+  default     = null
+  description = "(Optional) The size of the OS disk in GB. Default is the size of the image used."
+}
+
 variable "username" {
   type        = string
   default     = "runneradmin"

@@ -239,6 +239,14 @@ Type: `string`
 
 Default: `"ubuntu"`
 
+### <a name="input_os_disk_size_gb"></a> [os\_disk\_size\_gb](#input\_os\_disk\_size\_gb)
+
+Description: (Optional) The size of the OS disk in GB. Default is the size of the image used.
+
+Type: `number`
+
+Default: `null`
+
 ### <a name="input_password"></a> [password](#input\_password)
 
 Description: Password of the local user acocunt
