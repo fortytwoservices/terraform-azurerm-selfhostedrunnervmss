@@ -19,6 +19,7 @@ variable "use_existing_resource_group" {
 variable "virtual_machine_scale_set_name" {
   type    = string
   default = "self-hosted-runners"
+  description = "Input is used in it's entirety, nothing is appended or subtracted from the name"
 }
 
 variable "use_custom_subnet" {
