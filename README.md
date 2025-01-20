@@ -299,7 +299,7 @@ Default: `"Standard_D2s_v3"`
 
 ### <a name="input_ssh_public_keys"></a> [ssh\_public\_keys](#input\_ssh\_public\_keys)
 
-Description: n/a
+Description: (Optional) A list of SSH public keys to add to the VMSS instances
 
 Type: `list(string)`
 
@@ -315,7 +315,7 @@ Default: `null`
 
 ### <a name="input_tags"></a> [tags](#input\_tags)
 
-Description: n/a
+Description: (Optional) A mapping of tags to assign to the resources
 
 Type: `map(any)`
 
@@ -347,7 +347,7 @@ Default: `"runneradmin"`
 
 ### <a name="input_virtual_machine_scale_set_name"></a> [virtual\_machine\_scale\_set\_name](#input\_virtual\_machine\_scale\_set\_name)
 
-Description: n/a
+Description: (Optional) The name used for the virtual machine scale set
 
 Type: `string`
 
