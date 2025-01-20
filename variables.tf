@@ -17,8 +17,8 @@ variable "use_existing_resource_group" {
 }
 
 variable "virtual_machine_scale_set_name" {
-  type    = string
-  default = "self-hosted-runners"
+  type        = string
+  default     = "self-hosted-runners"
   description = "(Optional) The name used for the virtual machine scale set"
 }
 
@@ -80,14 +80,14 @@ variable "password" {
 }
 
 variable "tags" {
-  type    = map(any)
-  default = {}
+  type        = map(any)
+  default     = {}
   description = "(Optional) A mapping of tags to assign to the resources"
 }
 
 variable "ssh_public_keys" {
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "(Optional) A list of SSH public keys to add to the VMSS instances"
 }
 
