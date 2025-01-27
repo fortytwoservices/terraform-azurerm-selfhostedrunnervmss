@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.11.2...v1.12.0) (2025-01-27)
+
+
+### Features
+
+* add image sku override parameter, and update docs ([5b145ff](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/5b145ff2ecf348f8bedc6f533f838aac9e3419b4))
+* add new parameter override_image_sku ([f49d43f](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/f49d43fd77e1229866c68bbde38d3350a5a20a82))
+
 ## 1.11.2 (2024-12-04)
 
 
