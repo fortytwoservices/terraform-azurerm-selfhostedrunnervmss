@@ -4,6 +4,11 @@
 |---|
 | Due to the renaming of Company, the Github organization has changed name from "amestofortytwo" to "fortytwoservices". Pre-existing Terraform code would need to change that in code. |
 
+| :exclamation:  NB! |
+|---|
+| The "ubuntu-latest" plan will transition from using Ubuntu 22.04 to using Ubuntu 24.04 base image the 3rd of March.  |
+
+
 This module deploys a virtual machine scale set for self hosted runners for Azure DevOps and GitHub.
 
 ```hcl

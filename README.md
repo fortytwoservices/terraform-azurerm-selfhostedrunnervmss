@@ -5,6 +5,10 @@
 |---|
 | Due to the renaming of Company, the Github organization has changed name from "amestofortytwo" to "fortytwoservices". Pre-existing Terraform code would need to change that in code. |
 
+| :exclamation:  NB! |
+|---|
+| The "ubuntu-latest" plan will transition from using Ubuntu 22.04 to using Ubuntu 24.04 base image the 3rd of March.  |
+
 This module deploys a virtual machine scale set for self hosted runners for Azure DevOps and GitHub.
 
 ```hcl
@@ -244,6 +248,14 @@ Default: `"ubuntu"`
 Description: (Optional) The size of the OS disk in GB. Default is the size of the image used.
 
 Type: `number`
+
+Default: `null`
+
+### <a name="input_override_image_sku"></a> [override\_image\_sku](#input\_override\_image\_sku)
+
+Description: The SKU of the image to use for the VMSS instances
+
+Type: `string`
 
 Default: `null`
 

@@ -1,7 +1,7 @@
 locals {
   resource_group_name = var.use_existing_resource_group ? var.resource_group_name : azurerm_resource_group.rg[0].name
   image_offer         = var.runner_platform == "azure_devops" ? "self_hosted_runner_ado" : "self_hosted_runner_github"
-  image_sku           = "${var.operating_system}-latest"
+  image_sku           = coalesce(var.override_image_sku, "${var.operating_system}-latest")
   password            = var.password != null ? var.password : random_password.password[0].result
 
   load_balancer_backend_address_pool_ids = var.load_balancer_backend_address_pool_id != "" ? [var.load_balancer_backend_address_pool_id] : (!var.use_custom_subnet && var.deploy_load_balancer ? [azurerm_lb_backend_address_pool.load_balancer[0].id] : null)
