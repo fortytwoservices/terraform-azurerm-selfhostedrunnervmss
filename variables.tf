@@ -44,6 +44,12 @@ variable "operating_system" {
   }
 }
 
+variable "override_image_sku" {
+  type        = string
+  description = "The SKU of the image to use for the VMSS instances"
+  default     = null
+}
+
 variable "runner_platform" {
   type        = string
   description = "Whether it is github or azure_devops used for runners"
