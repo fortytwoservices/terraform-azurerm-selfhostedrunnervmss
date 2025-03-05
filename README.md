@@ -251,6 +251,14 @@ Type: `number`
 
 Default: `null`
 
+### <a name="input_os_disk_storage_account_type"></a> [os\_disk\_storage\_account\_type](#input\_os\_disk\_storage\_account\_type)
+
+Description: (Optional) The type of storage account to use for the OS disk. Default is Standard\_LRS.
+
+Type: `string`
+
+Default: `"Standard_LRS"`
+
 ### <a name="input_override_image_sku"></a> [override\_image\_sku](#input\_override\_image\_sku)
 
 Description: The SKU of the image to use for the VMSS instances
