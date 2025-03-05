@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.12.0...v1.13.0) (2025-03-05)
+
+
+### Features
+
+* Add support for setting vm os disk storage_account_type through the input variable os_disk_storage_account_type ([8c9b418](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/8c9b4185be639232a70de0f039268b2fdca0456f))
+* Add support for setting vm os disk storage_account_type through the input variable os_disk_storage_account_type ([3505b4f](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/3505b4f6f16d5997d270e802f0455c16e09b02a9))
+
 ## [1.12.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.11.2...v1.12.0) (2025-01-27)
 
 
