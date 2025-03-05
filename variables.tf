@@ -72,6 +72,12 @@ variable "os_disk_size_gb" {
   description = "(Optional) The size of the OS disk in GB. Default is the size of the image used."
 }
 
+variable "os_disk_storage_account_type" {
+  type        = string
+  default     = "Standard_LRS"
+  description = "(Optional) The type of storage account to use for the OS disk. Default is Standard_LRS."
+}
+
 variable "username" {
   type        = string
   default     = "runneradmin"
