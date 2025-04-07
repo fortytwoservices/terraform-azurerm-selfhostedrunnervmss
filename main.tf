@@ -242,6 +242,38 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
 }
 
 # Public IP address for NAT gateway
+resource "azurerm_public_ip" "load_balancer_ng" {
+  for_each            = !var.use_custom_subnet && var.nat_gateway.enabled ? toset(["vmss"]) : []
+  name                = "pip-${var.virtual_machine_scale_set_name}"
+  location            = var.location
+  resource_group_name = local.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
+resource "azurerm_nat_gateway" "vmss" {
+  for_each                = var.nat_gateway.enabled ? toset(["vmss"]) : []
+  name                    = "ng-${var.virtual_machine_scale_set_name}"
+  location                = var.location
+  resource_group_name     = local.resource_group_name
+  sku_name                = var.nat_gateway.sku_name
+  idle_timeout_in_minutes = var.nat_gateway.idle_timeout_in_minutes
+  zones                   = var.nat_gateway.zones
+}
+
+resource "azurerm_nat_gateway_public_ip_association" "vmss" {
+  for_each             = var.nat_gateway.enabled ? toset(["vmss"]) : []
+  nat_gateway_id       = azurerm_nat_gateway.vmss["vmss"].id
+  public_ip_address_id = azurerm_public_ip.load_balancer_ng["vmss"].id
+}
+
+resource "azurerm_subnet_nat_gateway_association" "vmss" {
+  for_each       = var.nat_gateway.enabled ? toset(["vmss"]) : []
+  subnet_id      = azurerm_subnet.vmss[0].id
+  nat_gateway_id = azurerm_nat_gateway.vmss["vmss"].id
+}
+
+# Public IP address for Load Balancer outgoing traffic
 resource "azurerm_public_ip" "load_balancer_pip" {
   count               = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
   name                = "${var.virtual_machine_scale_set_name}-lb-pip"
