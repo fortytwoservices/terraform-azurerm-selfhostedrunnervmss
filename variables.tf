@@ -34,6 +34,17 @@ variable "subnet_id" {
   default     = null
 }
 
+variable "nat_gateway" {
+  type = object({
+    enabled                 = optional(bool, false)
+    sku_name                = optional(string, "Standard")
+    idle_timeout_in_minutes = optional(number, 4)
+    zones                   = optional(list(string))
+  })
+  description = "When enabled, a NAT gateway will be created and associated with the scale set. The NAT gateway will be created in the same resource group as the scale set."
+  default     = {}
+}
+
 variable "operating_system" {
   type        = string
   description = "The OS of the runners"
