@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.13.0...v1.14.0) (2025-04-12)
+
+
+### Features
+
+* add nat gateway support ([e0f21fb](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/e0f21fbc2db39db31769a9b67821758e07380959))
+* add nat gateway support ([d5eabe0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/d5eabe031d8b54baaa032eab116c81f6d621f119))
+
 ## [1.13.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.12.0...v1.13.0) (2025-03-05)
 
 
