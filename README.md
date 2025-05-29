@@ -5,10 +5,6 @@
 |---|
 | Due to the renaming of Company, the Github organization has changed name from "amestofortytwo" to "fortytwoservices". Pre-existing Terraform code would need to change that in code. |
 
-| :exclamation:  NB! |
-|---|
-| The "ubuntu-latest" plan will transition from using Ubuntu 22.04 to using Ubuntu 24.04 base image the 3rd of March.  |
-
 This module deploys a virtual machine scale set for self hosted runners for Azure DevOps and GitHub.
 
 ```hcl
@@ -25,8 +21,8 @@ module "vmss" {
 
 After deploying the virtual machine scale set, you need to configure the Azure DevOps or GitHub side of things according to our documentation:
 
-- [Configure Azure DevOps Agent Pool](https://docs.byfortytwo.com/Self%20Hosted%20Runners/Azure%20DevOps/step2/)
-- [Configure GitHub](https://docs.byfortytwo.com/Self%20Hosted%20Runners/GitHub/step2/)
+- [Configure Azure DevOps Agent Pool](https://docs.fortytwo.io/Self%20Hosted%20Runners/Azure%20DevOps/step2/)
+- [Configure GitHub](https://docs.fortytwo.io/Self%20Hosted%20Runners/GitHub/step2/)
 
 <!-- markdownlint-disable MD033 -->
 ## Requirements
@@ -263,6 +259,29 @@ Description: The OS of the runners
 Type: `string`
 
 Default: `"ubuntu"`
+
+### <a name="input_os_disk_caching"></a> [os\_disk\_caching](#input\_os\_disk\_caching)
+
+Description: (Optional) The caching type for the OS disk. Default is ReadWrite.
+
+Type: `string`
+
+Default: `"ReadWrite"`
+
+### <a name="input_os_disk_diff_disk_settings"></a> [os\_disk\_diff\_disk\_settings](#input\_os\_disk\_diff\_disk\_settings)
+
+Description: (Optional) The settings for the OS disk's differential disk. Defaults to block not being set.
+
+Type:
+
+```hcl
+object({
+    option    = optional(string)
+    placement = optional(string, "CacheDisk")
+  })
+```
+
+Default: `{}`
 
 ### <a name="input_os_disk_size_gb"></a> [os\_disk\_size\_gb](#input\_os\_disk\_size\_gb)
 
