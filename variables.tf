@@ -59,7 +59,7 @@ variable "override_image_sku" {
   type        = string
   description = <<-EOF
     (Optional) The SKU of the image to use for the VMSS instances. Image SKU default to `operating_system`-latest. Currently supported values are:
-    Windows: "windows-latest", "windows-2025", "windows-2022", "windows-2019"
+    Windows: "windows-latest", "windows-2025", "windows-2022", "windows2019-latest"
     Ubuntu: "ubuntu-latest", "ubuntu-24.04", "ubuntu-20.04"
   EOF
   default     = null
