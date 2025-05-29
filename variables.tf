@@ -101,7 +101,7 @@ variable "os_disk_caching" {
 
 variable "os_disk_diff_disk_settings" {
   type = object({
-    option = optional(string)
+    option    = optional(string)
     placement = optional(string, "CacheDisk")
   })
   default     = {}
