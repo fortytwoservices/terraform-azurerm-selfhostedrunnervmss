@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.14.0...v1.15.0) (2025-05-29)
+
+
+### Features
+
+* enhance OS disk configuration with caching and differential disk settings ([#258](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/issues/258)) ([f42e1b7](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/f42e1b7dd7e95e3f319ac86ab5bc210330714595))
+
 ## [1.14.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.13.0...v1.14.0) (2025-04-12)
 
 
