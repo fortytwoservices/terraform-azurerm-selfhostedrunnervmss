@@ -112,8 +112,8 @@ variable "os_disk_diff_disk_settings" {
   description = <<-EOF
     (Optional) The settings for the OS disk's differential disk. Gives the possiblity to enable ephemeral os disk. If enabled it also requires `os_disk_caching` to be set to "ReadOnly". Defaults to block not being set.
     object({
-      option    = (Optional) The option for the differential disk. Possible values are Local. Defaults to null.
-      placement = (Optional) The placement of the differential disk. Possible values are CacheDisk and ResourceDisk. Defaults to ResourceDisk.
+      option    = (Optional) The option for the differential disk. Possible values are "Local". Defaults to null.
+      placement = (Optional) The placement of the differential disk. Possible values are "CacheDisk" and "ResourceDisk". Defaults to "ResourceDisk".
     })
   EOF
 }
