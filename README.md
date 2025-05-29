@@ -276,7 +276,7 @@ Type:
 
 ```hcl
 object({
-    option = optional(string)
+    option    = optional(string)
     placement = optional(string, "CacheDisk")
   })
 ```
