@@ -148,7 +148,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
     caching              = var.os_disk_caching
     disk_size_gb         = var.os_disk_size_gb
     dynamic "diff_disk_settings" {
-      for_each = try(var.os_disk_diff_disk_settings.option) != null ? [1] : []
+      for_each = try(var.os_disk_diff_disk_settings.option, null) != null ? [1] : []
       content {
         option    = var.os_disk_diff_disk_settings.option
         placement = var.os_disk_diff_disk_settings.placement
@@ -220,7 +220,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
     caching              = var.os_disk_caching
     disk_size_gb         = var.os_disk_size_gb
     dynamic "diff_disk_settings" {
-      for_each = try(var.os_disk_diff_disk_settings.option) != null ? [1] : []
+      for_each = try(var.os_disk_diff_disk_settings.option, null) != null ? [1] : []
       content {
         option    = var.os_disk_diff_disk_settings.option
         placement = var.os_disk_diff_disk_settings.placement
