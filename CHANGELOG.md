@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.15.1...v1.15.2) (2025-05-29)
+
+
+### Bug Fixes
+
+* correct override_image_sku docs ([#263](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/issues/263)) ([cf0815a](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/cf0815a88ea9f339fb5143746496b0e214798187))
+
 ## [1.15.1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.15.0...v1.15.1) (2025-05-29)
 
 
