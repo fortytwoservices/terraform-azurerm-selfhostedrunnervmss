@@ -264,6 +264,29 @@ Type: `string`
 
 Default: `"ubuntu"`
 
+### <a name="input_os_disk_caching"></a> [os\_disk\_caching](#input\_os\_disk\_caching)
+
+Description: (Optional) The caching type for the OS disk. Default is ReadWrite.
+
+Type: `string`
+
+Default: `"ReadWrite"`
+
+### <a name="input_os_disk_diff_disk_settings"></a> [os\_disk\_diff\_disk\_settings](#input\_os\_disk\_diff\_disk\_settings)
+
+Description: (Optional) The settings for the OS disk's differential disk. Defaults to block not being set.
+
+Type:
+
+```hcl
+object({
+    option = optional(string)
+    placement = optional(string, "CacheDisk")
+  })
+```
+
+Default: `{}`
+
 ### <a name="input_os_disk_size_gb"></a> [os\_disk\_size\_gb](#input\_os\_disk\_size\_gb)
 
 Description: (Optional) The size of the OS disk in GB. Default is the size of the image used.
