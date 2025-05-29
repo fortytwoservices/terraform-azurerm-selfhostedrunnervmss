@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.15.0...v1.15.1) (2025-05-29)
+
+
+### Bug Fixes
+
+* add fix that placement default is correct when set ([#261](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/issues/261)) ([5d667bb](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/5d667bbd2f78b65f45b37e862a3156d7f30b8b95))
+
 ## [1.15.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.14.0...v1.15.0) (2025-05-29)
 
 
