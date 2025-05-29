@@ -270,14 +270,18 @@ Default: `"ReadWrite"`
 
 ### <a name="input_os_disk_diff_disk_settings"></a> [os\_disk\_diff\_disk\_settings](#input\_os\_disk\_diff\_disk\_settings)
 
-Description: (Optional) The settings for the OS disk's differential disk. Defaults to block not being set.
+Description: (Optional) The settings for the OS disk's differential disk. Gives the possiblity to enable ephemeral os disk. If enabled it also requires `os_disk_caching` to be set to "ReadOnly". Defaults to block not being set.  
+object({  
+  option    = (Optional) The option for the differential disk. Possible values are Local. Defaults to null.  
+  placement = (Optional) The placement of the differential disk. Possible values are CacheDisk and ResourceDisk. Defaults to ResourceDisk.
+})
 
 Type:
 
 ```hcl
 object({
     option    = optional(string)
-    placement = optional(string, "CacheDisk")
+    placement = optional(string, "ResourceDisk")
   })
 ```
 
@@ -301,7 +305,9 @@ Default: `"Standard_LRS"`
 
 ### <a name="input_override_image_sku"></a> [override\_image\_sku](#input\_override\_image\_sku)
 
-Description: The SKU of the image to use for the VMSS instances
+Description: (Optional) The SKU of the image to use for the VMSS instances. Image SKU default to `operating_system`-latest. Currently supported values are:  
+Windows: "windows-latest", "windows-2025", "windows-2022", "windows-2019"  
+Ubuntu: "ubuntu-latest", "ubuntu-24.04", "ubuntu-20.04"
 
 Type: `string`
 

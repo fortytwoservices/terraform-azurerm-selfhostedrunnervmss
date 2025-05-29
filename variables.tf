@@ -57,7 +57,11 @@ variable "operating_system" {
 
 variable "override_image_sku" {
   type        = string
-  description = "The SKU of the image to use for the VMSS instances"
+  description = <<-EOF
+    (Optional) The SKU of the image to use for the VMSS instances. Image SKU default to `operating_system`-latest. Currently supported values are:
+    Windows: "windows-latest", "windows-2025", "windows-2022", "windows-2019"
+    Ubuntu: "ubuntu-latest", "ubuntu-24.04", "ubuntu-20.04"
+  EOF
   default     = null
 }
 
@@ -102,10 +106,16 @@ variable "os_disk_caching" {
 variable "os_disk_diff_disk_settings" {
   type = object({
     option    = optional(string)
-    placement = optional(string, "CacheDisk")
+    placement = optional(string, "ResourceDisk")
   })
   default     = {}
-  description = "(Optional) The settings for the OS disk's differential disk. Defaults to block not being set."
+  description = <<-EOF
+    (Optional) The settings for the OS disk's differential disk. Gives the possiblity to enable ephemeral os disk. If enabled it also requires `os_disk_caching` to be set to "ReadOnly". Defaults to block not being set.
+    object({
+      option    = (Optional) The option for the differential disk. Possible values are Local. Defaults to null.
+      placement = (Optional) The placement of the differential disk. Possible values are CacheDisk and ResourceDisk. Defaults to ResourceDisk.
+    })
+  EOF
 }
 
 variable "username" {
