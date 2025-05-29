@@ -89,6 +89,25 @@ variable "os_disk_storage_account_type" {
   description = "(Optional) The type of storage account to use for the OS disk. Default is Standard_LRS."
 }
 
+variable "os_disk_caching" {
+  type        = string
+  default     = "ReadWrite"
+  description = "(Optional) The caching type for the OS disk. Default is ReadWrite."
+  validation {
+    condition     = var.os_disk_caching == "None" || var.os_disk_caching == "ReadOnly" || var.os_disk_caching == "ReadWrite"
+    error_message = "Valid values for os_disk_caching are: None, ReadOnly, ReadWrite"
+  }
+}
+
+variable "os_disk_diff_disk_settings" {
+  type = object({
+    option = optional(string, "Local")
+    placement = optional(string, "CacheDisk")
+  })
+  default     = null
+  description = "(Optional) The settings for the OS disk's differential disk. Defaults to block not being set."
+}
+
 variable "username" {
   type        = string
   default     = "runneradmin"
