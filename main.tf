@@ -80,7 +80,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
   plan {
     publisher = "amestofortytwoas1653635920536"
     product   = local.image_offer
-    name      = replace(local.image_sku, "-gen2", "")
+    name      = local.image_sku
   }
 
   source_image_reference {
@@ -203,7 +203,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
   plan {
     publisher = "amestofortytwoas1653635920536"
     product   = local.image_offer
-    name      = replace(local.image_sku, "-gen2", "")
+    name      = local.image_sku
   }
 
   dynamic "identity" {
