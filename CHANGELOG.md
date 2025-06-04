@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.15.2...v1.16.0) (2025-06-04)
+
+
+### Features
+
+* add doc and gen2 images ([#267](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/issues/267)) ([f7cb6c7](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/f7cb6c735493553866be339ee9a0e995b9b4a48b))
+
 ## [1.15.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.15.1...v1.15.2) (2025-05-29)
 
 
