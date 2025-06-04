@@ -80,14 +80,14 @@ resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
   plan {
     publisher = "amestofortytwoas1653635920536"
     product   = local.image_offer
-    name      = local.image_sku
+    name      = replace(local.image_sku, "-gen2", "")
   }
 
   source_image_reference {
     publisher = "amestofortytwoas1653635920536"
     offer     = local.image_offer
     sku       = local.image_sku
-    version   = "latest"
+    version   = var.override_image_sku_version
   }
 
   dynamic "scale_in" {
@@ -193,7 +193,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
     publisher = "amestofortytwoas1653635920536"
     offer     = local.image_offer
     sku       = local.image_sku
-    version   = "latest"
+    version   = var.override_image_sku_version
   }
 
   boot_diagnostics {
@@ -203,7 +203,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
   plan {
     publisher = "amestofortytwoas1653635920536"
     product   = local.image_offer
-    name      = local.image_sku
+    name      = replace(local.image_sku, "-gen2", "")
   }
 
   dynamic "identity" {

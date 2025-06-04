@@ -306,12 +306,20 @@ Default: `"Standard_LRS"`
 ### <a name="input_override_image_sku"></a> [override\_image\_sku](#input\_override\_image\_sku)
 
 Description: (Optional) The SKU of the image to use for the VMSS instances. Image SKU default to `operating_system`-latest. Currently supported values are:  
-Windows: "windows-latest", "windows-2025", "windows-2022", "windows2019-latest"  
-Ubuntu: "ubuntu-latest", "ubuntu-24.04", "ubuntu-20.04"
+Windows: "windows-latest", "windows-2025-gen2", "windows-2025", "windows-2022", "windows2019-latest"  
+Ubuntu: "ubuntu-latest-gen2", "ubuntu-latest", "ubuntu-2404-gen2", "ubuntu-2404", "ubuntu-2204"
 
 Type: `string`
 
 Default: `null`
+
+### <a name="input_override_image_sku_version"></a> [override\_image\_sku\_version](#input\_override\_image\_sku\_version)
+
+Description: (Optional) The version of the image to use for the VMSS instances. If not provided, the latest version of the image will be used.
+
+Type: `string`
+
+Default: `"latest"`
 
 ### <a name="input_password"></a> [password](#input\_password)
 
