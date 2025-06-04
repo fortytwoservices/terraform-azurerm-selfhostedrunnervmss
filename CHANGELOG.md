@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.16.0...v1.16.1) (2025-06-04)
+
+
+### Bug Fixes
+
+* correct image sku for gen2 images ([#269](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/issues/269)) ([b5e5282](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/b5e5282f17861e850f567e37e26762c6f2a81dea))
+
 ## [1.16.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.15.2...v1.16.0) (2025-06-04)
 
 
