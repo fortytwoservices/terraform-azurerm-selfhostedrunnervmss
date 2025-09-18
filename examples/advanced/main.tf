@@ -1,10 +1,10 @@
 terraform {
-  required_version = ">=1.4.6"
+  required_version = ">=1.13.3"
 
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=3.100.0"
+      version = ">=4.44.0"
     }
   }
 }
@@ -36,7 +36,7 @@ resource "azurerm_subnet" "vmss" {
 
 module "vmss" {
   source                          = "fortytwoservices/selfhostedrunnervmss/azurerm"
-  version                         = "1.6.0"
+  version                         = "1.16.1"
   operating_system                = "ubuntu"       # windows or ubuntu
   runner_platform                 = "azure_devops" # azure_devops or github
   resource_group_name             = azurerm_resource_group.rg.name
