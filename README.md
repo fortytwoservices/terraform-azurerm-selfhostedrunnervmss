@@ -3,7 +3,7 @@
 
 | :exclamation:  NB! |
 |---|
-| Due to the renaming of Company, the Github organization has changed name from "amestofortytwo" to "fortytwoservices". Pre-existing Terraform code would need to change that in code. |
+| Windows-latest image will be updated to use Windows Server 2025 in October 2025. |
 
 This module deploys a virtual machine scale set for self hosted runners for Azure DevOps and GitHub.
 
@@ -21,8 +21,8 @@ module "vmss" {
 
 After deploying the virtual machine scale set, you need to configure the Azure DevOps or GitHub side of things according to our documentation:
 
-- [Configure Azure DevOps Agent Pool](https://docs.fortytwo.io/Self%20Hosted%20Runners/Azure%20DevOps/step2/)
-- [Configure GitHub](https://docs.fortytwo.io/Self%20Hosted%20Runners/GitHub/step2/)
+- [Configure Azure DevOps Agent Pool](https://docs.fortytwo.io/marketplace-offerings/self-hosted-runners/ado/step2/)
+- [Configure GitHub](https://docs.fortytwo.io/marketplace-offerings/self-hosted-runners/github/step2/)
 
 <!-- markdownlint-disable MD033 -->
 ## Requirements
@@ -41,12 +41,12 @@ The following requirements are needed by this module:
 
 ```hcl
 terraform {
-  required_version = ">=1.4.6"
+  required_version = ">=1.13.3"
 
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=3.100.0"
+      version = ">=4.44.0"
     }
   }
 }
@@ -57,7 +57,7 @@ provider "azurerm" {
 
 module "vmss" {
   source               = "fortytwoservices/selfhostedrunnervmss/azurerm"
-  version              = "1.6.0"
+  version              = "1.16.1"
   operating_system     = "ubuntu"       # windows or ubuntu
   runner_platform      = "azure_devops" # azure_devops or github
   deploy_load_balancer = true
@@ -72,12 +72,12 @@ output "password" {
 
 ```hcl
 terraform {
-  required_version = ">=1.4.6"
+  required_version = ">=1.13.3"
 
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=3.100.0"
+      version = ">=4.44.0"
     }
   }
 }
@@ -109,7 +109,7 @@ resource "azurerm_subnet" "vmss" {
 
 module "vmss" {
   source                          = "fortytwoservices/selfhostedrunnervmss/azurerm"
-  version                         = "1.6.0"
+  version                         = "1.16.1"
   operating_system                = "ubuntu"       # windows or ubuntu
   runner_platform                 = "azure_devops" # azure_devops or github
   resource_group_name             = azurerm_resource_group.rg.name
