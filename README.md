@@ -21,8 +21,8 @@ module "vmss" {
 
 After deploying the virtual machine scale set, you need to configure the Azure DevOps or GitHub side of things according to our documentation:
 
-- [Configure Azure DevOps Agent Pool](https://docs.fortytwo.io/Self%20Hosted%20Runners/Azure%20DevOps/step2/)
-- [Configure GitHub](https://docs.fortytwo.io/Self%20Hosted%20Runners/GitHub/step2/)
+- [Configure Azure DevOps Agent Pool](https://docs.fortytwo.io/marketplace-offerings/self-hosted-runners/ado/step2/)
+- [Configure GitHub](https://docs.fortytwo.io/marketplace-offerings/self-hosted-runners/github/step2/)
 
 <!-- markdownlint-disable MD033 -->
 ## Requirements
@@ -109,7 +109,7 @@ resource "azurerm_subnet" "vmss" {
 
 module "vmss" {
   source                          = "fortytwoservices/selfhostedrunnervmss/azurerm"
-  version                         = "1.6.0"
+  version                         = "1.16.1"
   operating_system                = "ubuntu"       # windows or ubuntu
   runner_platform                 = "azure_devops" # azure_devops or github
   resource_group_name             = azurerm_resource_group.rg.name
