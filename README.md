@@ -3,7 +3,11 @@
 
 | :exclamation:  NB! |
 |---|
-| Windows-latest image will be updated to use Windows Server 2025 in October 2025. |
+| Windows-latest image will be updated to use Windows Server 2025 in November 2025. |
+
+| :exclamation:  NB! |
+|---|
+| The SKU windows-2019 is deprecated and no new versions will be released. |
 
 This module deploys a virtual machine scale set for self hosted runners for Azure DevOps and GitHub.
 
