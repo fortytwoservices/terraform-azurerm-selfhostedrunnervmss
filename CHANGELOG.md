@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.16.1...v1.16.2) (2025-10-22)
+
+
+### Bug Fixes
+
+* update warnings about image changes ([050631c](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/050631cdea5a0a61b9b968ae8f390e7f916935fa))
+
 ## [1.16.1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.16.0...v1.16.1) (2025-06-04)
 
 
