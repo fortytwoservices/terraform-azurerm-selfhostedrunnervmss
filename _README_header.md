@@ -1,7 +1,7 @@
 # Self Hosted Runners Virtual Machine Scale Set
 
-| :exclamation:  NB! |
-|---|
+| :exclamation: NB!                                                        |
+| ------------------------------------------------------------------------ |
 | The SKU windows-2019 is deprecated and no new versions will be released. |
 
 This module deploys a virtual machine scale set for self hosted runners for Azure DevOps and GitHub.
