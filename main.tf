@@ -9,8 +9,8 @@ locals {
 
   load_balancer_backend_address_pool_ids = var.load_balancer_backend_address_pool_id != "" ? [
     { id = var.load_balancer_backend_address_pool_id }
-  ] : (!var.use_custom_subnet && var.deploy_load_balancer ? [
-    { id = azapi_resource.lb_backend_address_pool[0].id }
+    ] : (!var.use_custom_subnet && var.deploy_load_balancer ? [
+      { id = azapi_resource.lb_backend_address_pool[0].id }
   ] : [])
 }
 
@@ -22,11 +22,11 @@ resource "random_password" "password" {
 }
 
 resource "azapi_resource" "rg" {
-  count     = var.use_existing_resource_group ? 0 : 1
-  type      = "Microsoft.Resources/resourceGroups@2024-03-01"
-  name      = var.resource_group_name
-  location  = var.location
-  tags      = var.tags
+  count    = var.use_existing_resource_group ? 0 : 1
+  type     = "Microsoft.Resources/resourceGroups@2024-03-01"
+  name     = var.resource_group_name
+  location = var.location
+  tags     = var.tags
 }
 
 resource "azapi_resource" "vmss_vnet" {
@@ -61,12 +61,13 @@ resource "azapi_resource" "vmss_subnet" {
 }
 
 resource "azapi_resource" "vmss_linux" {
-  count     = var.operating_system == "ubuntu" ? 1 : 0
-  type      = "Microsoft.Compute/virtualMachineScaleSets@2024-11-01"
-  name      = var.virtual_machine_scale_set_name
-  parent_id = local.resource_group_id
-  location  = var.location
-  tags      = var.tags
+  count                = var.operating_system == "ubuntu" ? 1 : 0
+  type                 = "Microsoft.Compute/virtualMachineScaleSets@2025-04-01"
+  name                 = var.virtual_machine_scale_set_name
+  parent_id            = local.resource_group_id
+  location             = var.location
+  tags                 = var.tags
+  ignore_null_property = true
 
   dynamic "identity" {
     for_each = var.identity != null ? [var.identity] : []
@@ -143,7 +144,7 @@ resource "azapi_resource" "vmss_linux" {
                   subnet = {
                     id = var.subnet_id != null ? var.subnet_id : azapi_resource.vmss_subnet[0].id
                   }
-                  
+
                   loadBalancerBackendAddressPools = local.load_balancer_backend_address_pool_ids
                 }
               }]
@@ -175,16 +176,16 @@ resource "azapi_resource" "vmss_linux" {
             }
           }] : []
         }
-        
+
         scheduledEventsProfile = var.enable_termination_notifications ? {
-           terminationNotificationProfile = { // Correct nesting
-             enable = true
-             notBeforeTimeout = "PT5M"
-           }
+          terminationNotificationProfile = { // Correct nesting
+            enable           = true
+            notBeforeTimeout = "PT5M"
+          }
         } : null
       }
       scaleInPolicy = var.scale_in != null ? {
-        rules                = [var.scale_in.rule]
+        rules         = [var.scale_in.rule]
         forceDeletion = var.scale_in.force_deletion_enabled
       } : null
       automaticRepairsPolicy = var.enable_automatic_instance_repair ? {
@@ -193,19 +194,20 @@ resource "azapi_resource" "vmss_linux" {
       } : null
     }
   }
-  
+
   lifecycle {
     ignore_changes = [tags, body.sku.capacity]
   }
 }
 
 resource "azapi_resource" "vmss_windows" {
-  count     = var.operating_system == "windows" ? 1 : 0
-  type      = "Microsoft.Compute/virtualMachineScaleSets@2024-11-01"
-  name      = var.virtual_machine_scale_set_name
-  parent_id = local.resource_group_id
-  location  = var.location
-  tags      = var.tags
+  count                = var.operating_system == "windows" ? 1 : 0
+  type                 = "Microsoft.Compute/virtualMachineScaleSets@2025-04-01"
+  name                 = var.virtual_machine_scale_set_name
+  parent_id            = local.resource_group_id
+  location             = var.location
+  tags                 = var.tags
+  ignore_null_property = true
 
   dynamic "identity" {
     for_each = var.identity != null ? [var.identity] : []
@@ -214,7 +216,7 @@ resource "azapi_resource" "vmss_windows" {
       identity_ids = identity.value.identity_ids
     }
   }
-  
+
   body = {
     sku = {
       name     = var.sku
@@ -290,7 +292,7 @@ resource "azapi_resource" "vmss_windows" {
         }
       }
       scaleInPolicy = var.scale_in != null ? {
-        rules                = [var.scale_in.rule]
+        rules         = [var.scale_in.rule]
         forceDeletion = var.scale_in.force_deletion_enabled
       } : null
     }
@@ -325,8 +327,8 @@ resource "azapi_resource" "nat_gateway" {
     sku = { name = var.nat_gateway.sku_name }
     properties = {
       idleTimeoutInMinutes = var.nat_gateway.idle_timeout_in_minutes
-      publicIpAddresses    = !var.use_custom_subnet ? [{
-        id = azapi_resource.public_ip_nat["vmss"].id 
+      publicIpAddresses = !var.use_custom_subnet ? [{
+        id = azapi_resource.public_ip_nat["vmss"].id
       }] : []
     }
     zones = var.nat_gateway.zones
@@ -381,11 +383,10 @@ resource "azapi_resource" "lb_outbound_rule" {
   type      = "Microsoft.Network/loadBalancers/outboundRules@2024-05-01"
   name      = "OutboundRule"
   parent_id = azapi_resource.load_balancer[0].id
-  schema_validation_enabled = false
   body = {
     properties = {
-      protocol             = "All"
-      backendAddressPool   = {
+      protocol = "All"
+      backendAddressPool = {
         id = azapi_resource.lb_backend_address_pool[0].id
       }
       frontendIPConfigurations = [{
