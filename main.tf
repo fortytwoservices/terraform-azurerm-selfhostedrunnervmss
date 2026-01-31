@@ -379,10 +379,11 @@ resource "azapi_resource" "lb_backend_address_pool" {
 }
 
 resource "azapi_resource" "lb_outbound_rule" {
-  count     = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
-  type      = "Microsoft.Network/loadBalancers/outboundRules@2024-05-01"
-  name      = "OutboundRule"
-  parent_id = azapi_resource.load_balancer[0].id
+  count                     = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
+  type                      = "Microsoft.Network/loadBalancers/outboundRules@2024-05-01"
+  name                      = "OutboundRule"
+  parent_id                 = azapi_resource.load_balancer[0].id
+  schema_validation_enabled = false
   body = {
     properties = {
       protocol = "All"
