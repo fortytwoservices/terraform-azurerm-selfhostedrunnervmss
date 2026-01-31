@@ -1,10 +1,17 @@
+data "azurerm_client_config" "current" {}
+
 locals {
-  resource_group_name = var.use_existing_resource_group ? var.resource_group_name : azurerm_resource_group.rg[0].name
+  resource_group_name = var.use_existing_resource_group ? var.resource_group_name : azapi_resource.rg[0].name
+  resource_group_id   = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${local.resource_group_name}"
   image_offer         = var.runner_platform == "azure_devops" ? "self_hosted_runner_ado" : "self_hosted_runner_github"
   image_sku           = coalesce(var.override_image_sku, "${var.operating_system}-latest")
   password            = var.password != null ? var.password : random_password.password[0].result
 
-  load_balancer_backend_address_pool_ids = var.load_balancer_backend_address_pool_id != "" ? [var.load_balancer_backend_address_pool_id] : (!var.use_custom_subnet && var.deploy_load_balancer ? [azurerm_lb_backend_address_pool.load_balancer[0].id] : null)
+  load_balancer_backend_address_pool_ids = var.load_balancer_backend_address_pool_id != "" ? [
+    { id = var.load_balancer_backend_address_pool_id }
+  ] : (!var.use_custom_subnet && var.deploy_load_balancer ? [
+    { id = azapi_resource.lb_backend_address_pool[0].id }
+  ] : [])
 }
 
 resource "random_password" "password" {
@@ -14,317 +21,438 @@ resource "random_password" "password" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-resource "azurerm_resource_group" "rg" {
-  count    = var.use_existing_resource_group ? 0 : 1
-  name     = var.resource_group_name
-  location = var.location
-  tags     = var.tags
+resource "azapi_resource" "rg" {
+  count     = var.use_existing_resource_group ? 0 : 1
+  type      = "Microsoft.Resources/resourceGroups@2024-03-01"
+  name      = var.resource_group_name
+  location  = var.location
+  tags      = var.tags
 }
 
-resource "azurerm_virtual_network" "vmss" {
-  count               = var.use_custom_subnet ? 0 : 1
-  name                = "${var.virtual_machine_scale_set_name}-net"
-  address_space       = ["10.0.0.0/24"]
-  location            = var.location
-  resource_group_name = local.resource_group_name
-  tags                = var.tags
-
-  depends_on = [azurerm_resource_group.rg]
-  lifecycle {
-    ignore_changes = [tags]
-  }
-}
-
-resource "azurerm_subnet" "vmss" {
-  count                = var.use_custom_subnet ? 0 : 1
-  name                 = "vmss"
-  resource_group_name  = local.resource_group_name
-  virtual_network_name = azurerm_virtual_network.vmss[0].name
-  address_prefixes     = azurerm_virtual_network.vmss[0].address_space
-
-  lifecycle {
-    ignore_changes = [
-      service_endpoints,
-    ]
-  }
-}
-
-resource "azurerm_linux_virtual_machine_scale_set" "self_hosted_runners" {
-  count                           = var.operating_system == "ubuntu" ? 1 : 0
-  name                            = var.virtual_machine_scale_set_name
-  location                        = var.location
-  resource_group_name             = local.resource_group_name
-  sku                             = var.sku
-  instances                       = 0
-  admin_username                  = var.username
-  admin_password                  = length(var.ssh_public_keys) == 0 ? local.password : null
-  disable_password_authentication = length(var.ssh_public_keys) > 0
-  tags                            = var.tags
-  upgrade_mode                    = "Manual"
-  overprovision                   = false
-  encryption_at_host_enabled      = var.vmss_encryption_at_host_enabled
-
-
-  dynamic "admin_ssh_key" {
-    for_each = var.ssh_public_keys
-    content {
-      public_key = admin_ssh_key.value
-      username   = var.username
-    }
-  }
-
-  boot_diagnostics {
-    storage_account_uri = null
-  }
-
-  plan {
-    publisher = "amestofortytwoas1653635920536"
-    product   = local.image_offer
-    name      = local.image_sku
-  }
-
-  source_image_reference {
-    publisher = "amestofortytwoas1653635920536"
-    offer     = local.image_offer
-    sku       = local.image_sku
-    version   = var.override_image_sku_version
-  }
-
-  dynamic "scale_in" {
-    for_each = var.scale_in != null ? [1] : []
-    content {
-      force_deletion_enabled = var.scale_in.force_deletion_enabled
-      rule                   = var.scale_in.rule
-    }
-  }
-
-  dynamic "termination_notification" {
-    for_each = var.enable_termination_notifications ? [1] : []
-    content {
-      enabled = true
-      timeout = "PT5M"
-    }
-  }
-
-  dynamic "automatic_instance_repair" {
-    for_each = var.enable_automatic_instance_repair ? [1] : []
-    content {
-      enabled      = true
-      grace_period = "PT10M"
-    }
-  }
-
-  dynamic "extension" {
-    for_each = var.enable_automatic_instance_repair ? [1] : []
-    content {
-      name                 = "HealthExtension"
-      publisher            = "Microsoft.ManagedServices"
-      type                 = "ApplicationHealthLinux"
-      type_handler_version = "1.0"
-
-      settings = <<SETTINGS
-      {
-        "protocol": "tcp",
-        "port": 22,
-        "intervalInSeconds": 5,
-        "numberOfProbes": 1
+resource "azapi_resource" "vmss_vnet" {
+  count     = var.use_custom_subnet ? 0 : 1
+  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
+  name      = "${var.virtual_machine_scale_set_name}-net"
+  parent_id = local.resource_group_id
+  location  = var.location
+  tags      = var.tags
+  body = {
+    properties = {
+      addressSpace = {
+        addressPrefixes = ["10.0.0.0/24"]
       }
-      SETTINGS
     }
-
   }
+}
+
+resource "azapi_resource" "vmss_subnet" {
+  count     = var.use_custom_subnet ? 0 : 1
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  name      = "vmss"
+  parent_id = azapi_resource.vmss_vnet[0].id
+  body = {
+    properties = {
+      addressPrefix = "10.0.0.0/24"
+      natGateway = var.nat_gateway.enabled ? {
+        id = azapi_resource.nat_gateway["vmss"].id
+      } : null
+    }
+  }
+}
+
+resource "azapi_resource" "vmss_linux" {
+  count     = var.operating_system == "ubuntu" ? 1 : 0
+  type      = "Microsoft.Compute/virtualMachineScaleSets@2024-11-01"
+  name      = var.virtual_machine_scale_set_name
+  parent_id = local.resource_group_id
+  location  = var.location
+  tags      = var.tags
 
   dynamic "identity" {
-    for_each = var.identity != null ? [1] : []
-
+    for_each = var.identity != null ? [var.identity] : []
     content {
-      type         = var.identity.type
-      identity_ids = var.identity.identity_ids
+      type         = identity.value.type
+      identity_ids = identity.value.identity_ids
     }
   }
 
-  os_disk {
-    storage_account_type = var.os_disk_storage_account_type
-    caching              = var.os_disk_caching
-    disk_size_gb         = var.os_disk_size_gb
-    dynamic "diff_disk_settings" {
-      for_each = try(var.os_disk_diff_disk_settings.option, null) != null ? [1] : []
-      content {
-        option    = var.os_disk_diff_disk_settings.option
-        placement = var.os_disk_diff_disk_settings.placement
+  body = {
+    sku = {
+      name     = var.sku
+      tier     = "Standard"
+      capacity = 0
+    }
+    plan = {
+      publisher = "amestofortytwoas1653635920536"
+      product   = local.image_offer
+      name      = local.image_sku
+    }
+    properties = {
+      overprovision = false
+      upgradePolicy = {
+        mode = "Manual"
       }
+      virtualMachineProfile = {
+        osProfile = {
+          computerNamePrefix = var.virtual_machine_scale_set_name
+          adminUsername      = var.username
+          adminPassword      = length(var.ssh_public_keys) == 0 ? local.password : null
+          linuxConfiguration = {
+            disablePasswordAuthentication = length(var.ssh_public_keys) > 0
+            ssh = {
+              publicKeys = [for k in var.ssh_public_keys : {
+                path    = "/home/${var.username}/.ssh/authorized_keys"
+                keyData = k
+              }]
+            }
+          }
+        }
+        storageProfile = {
+          imageReference = {
+            publisher = "amestofortytwoas1653635920536"
+            offer     = local.image_offer
+            sku       = local.image_sku
+            version   = var.override_image_sku_version
+          }
+          osDisk = {
+            createOption = "FromImage" # Required for VMSS
+            caching      = var.os_disk_caching
+            managedDisk = {
+              storageAccountType = var.os_disk_storage_account_type
+            }
+            diskSizeGB = var.os_disk_size_gb
+            diffDiskSettings = try(var.os_disk_diff_disk_settings.option, null) != null ? {
+              option    = var.os_disk_diff_disk_settings.option
+              placement = var.os_disk_diff_disk_settings.placement
+            } : null
+          }
+        }
+        networkProfile = {
+          networkInterfaceConfigurations = [{
+            name = "${var.virtual_machine_scale_set_name}-nic"
+            properties = {
+              primary                     = true
+              enableAcceleratedNetworking = var.enable_accelerated_networking
+              networkSecurityGroup = var.network_security_group_id != null ? {
+                id = var.network_security_group_id
+              } : null
+              ipConfigurations = [{
+                name = "internal"
+                properties = {
+                  primary = true
+                  subnet = {
+                    id = var.subnet_id != null ? var.subnet_id : azapi_resource.vmss_subnet[0].id
+                  }
+                  
+                  loadBalancerBackendAddressPools = local.load_balancer_backend_address_pool_ids
+                }
+              }]
+            }
+          }]
+        }
+        securityProfile = {
+          encryptionAtHost = var.vmss_encryption_at_host_enabled
+        }
+        diagnosticsProfile = {
+          bootDiagnostics = {
+            enabled    = true
+            storageUri = null
+          }
+        }
+        extensionProfile = {
+          extensions = var.enable_automatic_instance_repair ? [{
+            name = "HealthExtension"
+            properties = {
+              publisher          = "Microsoft.ManagedServices"
+              type               = "ApplicationHealthLinux"
+              typeHandlerVersion = "1.0"
+              settings = {
+                protocol          = "tcp"
+                port              = 22
+                intervalInSeconds = 5
+                numberOfProbes    = 1
+              }
+            }
+          }] : []
+        }
+        
+        scheduledEventsProfile = var.enable_termination_notifications ? {
+           terminationNotificationProfile = { // Correct nesting
+             enable = true
+             notBeforeTimeout = "PT5M"
+           }
+        } : null
+      }
+      scaleInPolicy = var.scale_in != null ? {
+        rules                = [var.scale_in.rule]
+        forceDeletion = var.scale_in.force_deletion_enabled
+      } : null
+      automaticRepairsPolicy = var.enable_automatic_instance_repair ? {
+        enabled     = true
+        gracePeriod = "PT10M"
+      } : null
     }
   }
-
-  network_interface {
-    name                          = "${var.virtual_machine_scale_set_name}-nic"
-    primary                       = true
-    enable_accelerated_networking = var.enable_accelerated_networking
-    network_security_group_id     = var.network_security_group_id
-
-    ip_configuration {
-      name                                   = "internal"
-      primary                                = true
-      subnet_id                              = var.subnet_id != null ? var.subnet_id : azurerm_subnet.vmss[0].id
-      load_balancer_backend_address_pool_ids = local.load_balancer_backend_address_pool_ids
-    }
-  }
-
+  
   lifecycle {
-    ignore_changes = [tags, automatic_os_upgrade_policy, instances, overprovision, single_placement_group]
+    ignore_changes = [tags, body.sku.capacity]
   }
 }
 
-resource "azurerm_windows_virtual_machine_scale_set" "self_hosted_runners" {
-  count                      = var.operating_system == "windows" ? 1 : 0
-  name                       = var.virtual_machine_scale_set_name
-  location                   = var.location
-  resource_group_name        = local.resource_group_name
-  sku                        = var.sku
-  instances                  = 0
-  admin_username             = var.username
-  admin_password             = local.password
-  tags                       = var.tags
-  upgrade_mode               = "Manual"
-  overprovision              = false
-  encryption_at_host_enabled = var.vmss_encryption_at_host_enabled
-
-  source_image_reference {
-    publisher = "amestofortytwoas1653635920536"
-    offer     = local.image_offer
-    sku       = local.image_sku
-    version   = var.override_image_sku_version
-  }
-
-  boot_diagnostics {
-    storage_account_uri = null
-  }
-
-  plan {
-    publisher = "amestofortytwoas1653635920536"
-    product   = local.image_offer
-    name      = local.image_sku
-  }
+resource "azapi_resource" "vmss_windows" {
+  count     = var.operating_system == "windows" ? 1 : 0
+  type      = "Microsoft.Compute/virtualMachineScaleSets@2024-11-01"
+  name      = var.virtual_machine_scale_set_name
+  parent_id = local.resource_group_id
+  location  = var.location
+  tags      = var.tags
 
   dynamic "identity" {
-    for_each = var.identity != null ? [1] : []
-
+    for_each = var.identity != null ? [var.identity] : []
     content {
-      type         = var.identity.type
-      identity_ids = var.identity.identity_ids
+      type         = identity.value.type
+      identity_ids = identity.value.identity_ids
     }
   }
-
-  os_disk {
-    storage_account_type = var.os_disk_storage_account_type
-    caching              = var.os_disk_caching
-    disk_size_gb         = var.os_disk_size_gb
-    dynamic "diff_disk_settings" {
-      for_each = try(var.os_disk_diff_disk_settings.option, null) != null ? [1] : []
-      content {
-        option    = var.os_disk_diff_disk_settings.option
-        placement = var.os_disk_diff_disk_settings.placement
+  
+  body = {
+    sku = {
+      name     = var.sku
+      tier     = "Standard"
+      capacity = 0
+    }
+    plan = {
+      publisher = "amestofortytwoas1653635920536"
+      product   = local.image_offer
+      name      = local.image_sku
+    }
+    properties = {
+      overprovision = false
+      upgradePolicy = {
+        mode = "Manual"
       }
-    }
-  }
-
-  network_interface {
-    name                          = "${var.virtual_machine_scale_set_name}-nic"
-    primary                       = true
-    enable_accelerated_networking = var.enable_accelerated_networking
-    network_security_group_id     = var.network_security_group_id
-
-    ip_configuration {
-      name                                   = "internal"
-      primary                                = true
-      subnet_id                              = var.subnet_id != null ? var.subnet_id : azurerm_subnet.vmss[0].id
-      load_balancer_backend_address_pool_ids = local.load_balancer_backend_address_pool_ids
-    }
-  }
-
-  dynamic "scale_in" {
-    for_each = var.scale_in != null ? [1] : []
-    content {
-      force_deletion_enabled = var.scale_in.force_deletion_enabled
-      rule                   = var.scale_in.rule
+      virtualMachineProfile = {
+        osProfile = {
+          computerNamePrefix = var.virtual_machine_scale_set_name
+          adminUsername      = var.username
+          adminPassword      = local.password
+        }
+        storageProfile = {
+          imageReference = {
+            publisher = "amestofortytwoas1653635920536"
+            offer     = local.image_offer
+            sku       = local.image_sku
+            version   = var.override_image_sku_version
+          }
+          osDisk = {
+            createOption = "FromImage"
+            caching      = var.os_disk_caching
+            managedDisk = {
+              storageAccountType = var.os_disk_storage_account_type
+            }
+            diskSizeGB = var.os_disk_size_gb
+            diffDiskSettings = try(var.os_disk_diff_disk_settings.option, null) != null ? {
+              option    = var.os_disk_diff_disk_settings.option
+              placement = var.os_disk_diff_disk_settings.placement
+            } : null
+          }
+        }
+        networkProfile = {
+          networkInterfaceConfigurations = [{
+            name = "${var.virtual_machine_scale_set_name}-nic"
+            properties = {
+              primary                     = true
+              enableAcceleratedNetworking = var.enable_accelerated_networking
+              networkSecurityGroup = var.network_security_group_id != null ? {
+                id = var.network_security_group_id
+              } : null
+              ipConfigurations = [{
+                name = "internal"
+                properties = {
+                  primary = true
+                  subnet = {
+                    id = var.subnet_id != null ? var.subnet_id : azapi_resource.vmss_subnet[0].id
+                  }
+                  loadBalancerBackendAddressPools = local.load_balancer_backend_address_pool_ids
+                }
+              }]
+            }
+          }]
+        }
+        securityProfile = {
+          encryptionAtHost = var.vmss_encryption_at_host_enabled
+        }
+        diagnosticsProfile = {
+          bootDiagnostics = {
+            enabled    = true
+            storageUri = null
+          }
+        }
+      }
+      scaleInPolicy = var.scale_in != null ? {
+        rules                = [var.scale_in.rule]
+        forceDeletion = var.scale_in.force_deletion_enabled
+      } : null
     }
   }
 
   lifecycle {
-    ignore_changes = [tags, automatic_os_upgrade_policy, instances, overprovision, single_placement_group]
+    ignore_changes = [tags, body.sku.capacity]
   }
 }
 
-# Public IP address for NAT gateway
-resource "azurerm_public_ip" "load_balancer_ng" {
-  for_each            = !var.use_custom_subnet && var.nat_gateway.enabled ? toset(["vmss"]) : []
-  name                = "pip-${var.virtual_machine_scale_set_name}"
-  location            = var.location
-  resource_group_name = local.resource_group_name
-  allocation_method   = "Static"
-  sku                 = "Standard"
-}
-
-resource "azurerm_nat_gateway" "vmss" {
-  for_each                = var.nat_gateway.enabled ? toset(["vmss"]) : []
-  name                    = "ng-${var.virtual_machine_scale_set_name}"
-  location                = var.location
-  resource_group_name     = local.resource_group_name
-  sku_name                = var.nat_gateway.sku_name
-  idle_timeout_in_minutes = var.nat_gateway.idle_timeout_in_minutes
-  zones                   = var.nat_gateway.zones
-}
-
-resource "azurerm_nat_gateway_public_ip_association" "vmss" {
-  for_each             = var.nat_gateway.enabled ? toset(["vmss"]) : []
-  nat_gateway_id       = azurerm_nat_gateway.vmss["vmss"].id
-  public_ip_address_id = azurerm_public_ip.load_balancer_ng["vmss"].id
-}
-
-resource "azurerm_subnet_nat_gateway_association" "vmss" {
-  for_each       = var.nat_gateway.enabled ? toset(["vmss"]) : []
-  subnet_id      = azurerm_subnet.vmss[0].id
-  nat_gateway_id = azurerm_nat_gateway.vmss["vmss"].id
-}
-
-# Public IP address for Load Balancer outgoing traffic
-resource "azurerm_public_ip" "load_balancer_pip" {
-  count               = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
-  name                = "${var.virtual_machine_scale_set_name}-lb-pip"
-  location            = var.location
-  resource_group_name = local.resource_group_name
-  allocation_method   = "Static"
-  sku                 = "Standard"
-}
-
-# Load balancer
-resource "azurerm_lb" "load_balancer" {
-  count               = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
-  name                = "${var.virtual_machine_scale_set_name}-lb"
-  location            = var.location
-  resource_group_name = local.resource_group_name
-  sku                 = "Standard"
-
-  frontend_ip_configuration {
-    name                 = "PublicIPAddress"
-    public_ip_address_id = azurerm_public_ip.load_balancer_pip[0].id
+resource "azapi_resource" "public_ip_nat" {
+  for_each  = !var.use_custom_subnet && var.nat_gateway.enabled ? toset(["vmss"]) : []
+  type      = "Microsoft.Network/publicIPAddresses@2024-05-01"
+  name      = "pip-${var.virtual_machine_scale_set_name}"
+  parent_id = local.resource_group_id
+  location  = var.location
+  body = {
+    sku = { name = "Standard" }
+    properties = {
+      publicIPAllocationMethod = "Static"
+    }
   }
 }
 
-resource "azurerm_lb_backend_address_pool" "load_balancer" {
-  count           = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
-  loadbalancer_id = azurerm_lb.load_balancer[0].id
-  name            = "backend"
-}
-
-resource "azurerm_lb_outbound_rule" "outbound_rule" {
-  count                   = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
-  name                    = "OutboundRule"
-  loadbalancer_id         = azurerm_lb.load_balancer[0].id
-  protocol                = "All"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.load_balancer[0].id
-
-  frontend_ip_configuration {
-    name = "PublicIPAddress"
+resource "azapi_resource" "nat_gateway" {
+  for_each  = var.nat_gateway.enabled ? toset(["vmss"]) : []
+  type      = "Microsoft.Network/natGateways@2024-05-01"
+  name      = "ng-${var.virtual_machine_scale_set_name}"
+  parent_id = local.resource_group_id
+  location  = var.location
+  body = {
+    sku = { name = var.nat_gateway.sku_name }
+    properties = {
+      idleTimeoutInMinutes = var.nat_gateway.idle_timeout_in_minutes
+      publicIpAddresses    = !var.use_custom_subnet ? [{
+        id = azapi_resource.public_ip_nat["vmss"].id 
+      }] : []
+    }
+    zones = var.nat_gateway.zones
   }
 }
+
+resource "azapi_resource" "public_ip_lb" {
+  count     = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
+  type      = "Microsoft.Network/publicIPAddresses@2024-05-01"
+  name      = "${var.virtual_machine_scale_set_name}-lb-pip"
+  parent_id = local.resource_group_id
+  location  = var.location
+  body = {
+    sku = { name = "Standard" }
+    properties = {
+      publicIPAllocationMethod = "Static"
+    }
+  }
+}
+
+resource "azapi_resource" "load_balancer" {
+  count     = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
+  type      = "Microsoft.Network/loadBalancers@2024-05-01"
+  name      = "${var.virtual_machine_scale_set_name}-lb"
+  parent_id = local.resource_group_id
+  location  = var.location
+  body = {
+    sku = { name = "Standard" }
+    properties = {
+      frontendIPConfigurations = [{
+        name = "PublicIPAddress"
+        properties = {
+          publicIPAddress = {
+            id = azapi_resource.public_ip_lb[0].id
+          }
+        }
+      }]
+    }
+  }
+}
+
+resource "azapi_resource" "lb_backend_address_pool" {
+  count     = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
+  type      = "Microsoft.Network/loadBalancers/backendAddressPools@2024-05-01"
+  name      = "backend"
+  parent_id = azapi_resource.load_balancer[0].id
+  body      = {}
+}
+
+resource "azapi_resource" "lb_outbound_rule" {
+  count     = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
+  type      = "Microsoft.Network/loadBalancers/outboundRules@2024-05-01"
+  name      = "OutboundRule"
+  parent_id = azapi_resource.load_balancer[0].id
+  schema_validation_enabled = false
+  body = {
+    properties = {
+      protocol             = "All"
+      backendAddressPool   = {
+        id = azapi_resource.lb_backend_address_pool[0].id
+      }
+      frontendIPConfigurations = [{
+        id = "${azapi_resource.load_balancer[0].id}/frontendIPConfigurations/PublicIPAddress"
+      }]
+    }
+  }
+}
+
+# Moved blocks to attempt state migration
+moved {
+  from = azurerm_resource_group.rg
+  to   = azapi_resource.rg
+}
+
+moved {
+  from = azurerm_virtual_network.vmss
+  to   = azapi_resource.vmss_vnet
+}
+
+moved {
+  from = azurerm_subnet.vmss
+  to   = azapi_resource.vmss_subnet
+}
+
+moved {
+  from = azurerm_linux_virtual_machine_scale_set.self_hosted_runners
+  to   = azapi_resource.vmss_linux
+}
+
+moved {
+  from = azurerm_windows_virtual_machine_scale_set.self_hosted_runners
+  to   = azapi_resource.vmss_windows
+}
+
+moved {
+  from = azurerm_public_ip.load_balancer_ng
+  to   = azapi_resource.public_ip_nat
+}
+
+moved {
+  from = azurerm_nat_gateway.vmss
+  to   = azapi_resource.nat_gateway
+}
+
+moved {
+  from = azurerm_public_ip.load_balancer_pip
+  to   = azapi_resource.public_ip_lb
+}
+
+moved {
+  from = azurerm_lb.load_balancer
+  to   = azapi_resource.load_balancer
+}
+
+moved {
+  from = azurerm_lb_backend_address_pool.load_balancer
+  to   = azapi_resource.lb_backend_address_pool
+}
+
+moved {
+  from = azurerm_lb_outbound_rule.outbound_rule
+  to   = azapi_resource.lb_outbound_rule
+}
+
+# The following resources are now embedded in parent resource properties and will be removed from state.
+# They require manual state removal or will be destroyed. `moved` cannot handle removal.
+# azurerm_nat_gateway_public_ip_association.vmss
+# azurerm_subnet_nat_gateway_association.vmss
+
