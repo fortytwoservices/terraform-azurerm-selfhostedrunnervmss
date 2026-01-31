@@ -103,13 +103,18 @@ resource "azapi_resource" "vmss_linux" {
       upgradePolicy = {
         mode = "Manual"
       }
+      doNotRunExtensionsOnOverprovisionedVMs = false
+      orchestrationMode                      = "Uniform"
+      singlePlacementGroup                   = true
       virtualMachineProfile = {
         osProfile = {
-          computerNamePrefix = var.virtual_machine_scale_set_name
-          adminUsername      = var.username
-          adminPassword      = length(var.ssh_public_keys) == 0 ? local.password : null
+          computerNamePrefix       = var.virtual_machine_scale_set_name
+          adminUsername            = var.username
+          adminPassword            = length(var.ssh_public_keys) == 0 ? local.password : null
+          allowExtensionOperations = true
           linuxConfiguration = {
             disablePasswordAuthentication = length(var.ssh_public_keys) > 0
+            provisionVMAgent              = true
             ssh = {
               publicKeys = [for k in var.ssh_public_keys : {
                 path    = "/home/${var.username}/.ssh/authorized_keys"
@@ -117,7 +122,10 @@ resource "azapi_resource" "vmss_linux" {
               }]
             }
           }
+          requireGuestProvisionSignal = true
+          secrets                     = []
         }
+        priority = "Regular"
         storageProfile = {
           imageReference = {
             publisher = "amestofortytwoas1653635920536"
@@ -136,6 +144,8 @@ resource "azapi_resource" "vmss_linux" {
               option    = var.os_disk_diff_disk_settings.option
               placement = var.os_disk_diff_disk_settings.placement
             } : null
+            osType                  = "Linux"
+            writeAcceleratorEnabled = false
           }
         }
         networkProfile = {
