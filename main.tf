@@ -31,7 +31,7 @@ resource "azapi_resource" "rg" {
 
 resource "azapi_resource" "vmss_vnet" {
   count     = var.use_custom_subnet ? 0 : 1
-  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
+  type      = "Microsoft.Network/virtualNetworks@2025-03-01"
   name      = "${var.virtual_machine_scale_set_name}-net"
   parent_id = local.resource_group_id
   location  = var.location
@@ -132,15 +132,21 @@ resource "azapi_resource" "vmss_linux" {
           networkInterfaceConfigurations = [{
             name = "${var.virtual_machine_scale_set_name}-nic"
             properties = {
-              primary                     = true
+              primary                 = true
+              disableTcpStateTracking = false
+              dnsSettings = {
+                dnsServers = []
+              }
               enableAcceleratedNetworking = var.enable_accelerated_networking
+              enableIPForwarding          = false
               networkSecurityGroup = var.network_security_group_id != null ? {
                 id = var.network_security_group_id
               } : null
               ipConfigurations = [{
                 name = "internal"
                 properties = {
-                  primary = true
+                  primary                 = true
+                  privateIPAddressVersion = "IPv4"
                   subnet = {
                     id = var.subnet_id != null ? var.subnet_id : azapi_resource.vmss_subnet[0].id
                   }
@@ -196,7 +202,7 @@ resource "azapi_resource" "vmss_linux" {
   }
 
   lifecycle {
-    ignore_changes = [tags, body.sku.capacity]
+    ignore_changes = [tags, body.sku.capacity, body.properties.virtualMachineProfile.extensionProfile]
   }
 }
 
@@ -299,7 +305,7 @@ resource "azapi_resource" "vmss_windows" {
   }
 
   lifecycle {
-    ignore_changes = [tags, body.sku.capacity]
+    ignore_changes = [tags, body.sku.capacity, body.properties.virtualMachineProfile.extensionProfile]
   }
 }
 
