@@ -30,12 +30,13 @@ resource "azapi_resource" "rg" {
 }
 
 resource "azapi_resource" "vmss_vnet" {
-  count     = var.use_custom_subnet ? 0 : 1
-  type      = "Microsoft.Network/virtualNetworks@2025-03-01"
-  name      = "${var.virtual_machine_scale_set_name}-net"
-  parent_id = local.resource_group_id
-  location  = var.location
-  tags      = var.tags
+  count                = var.use_custom_subnet ? 0 : 1
+  type                 = "Microsoft.Network/virtualNetworks@2025-03-01"
+  name                 = "${var.virtual_machine_scale_set_name}-net"
+  parent_id            = local.resource_group_id
+  location             = var.location
+  tags                 = var.tags
+  ignore_null_property = true
   body = {
     properties = {
       addressSpace = {
