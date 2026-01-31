@@ -41,7 +41,16 @@ resource "azapi_resource" "vmss_vnet" {
       addressSpace = {
         addressPrefixes = ["10.0.0.0/24"]
       }
+      dhcpOptions = {
+        dnsServers = []
+      }
+      enableDdosProtection        = false
+      privateEndpointVNetPolicies = "Disabled"
+      virtualNetworkPeerings      = []
     }
+  }
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
   }
 }
 
