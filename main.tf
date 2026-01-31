@@ -47,6 +47,7 @@ resource "azapi_resource" "vmss_vnet" {
       }
       enableDdosProtection        = false
       privateEndpointVNetPolicies = "Disabled"
+      subnets                     = null
       virtualNetworkPeerings      = []
     }
   }
@@ -479,8 +480,18 @@ moved {
   to   = azapi_resource.lb_outbound_rule
 }
 
-# The following resources are now embedded in parent resource properties and will be removed from state.
-# They require manual state removal or will be destroyed. `moved` cannot handle removal.
-# azurerm_nat_gateway_public_ip_association.vmss
-# azurerm_subnet_nat_gateway_association.vmss
+removed {
+  from = azurerm_nat_gateway_public_ip_association.vmss
 
+  lifecycle {
+    destroy = false
+  }
+}
+
+removed {
+  from = azurerm_subnet_nat_gateway_association.vmss
+
+  lifecycle {
+    destroy = false
+  }
+}
