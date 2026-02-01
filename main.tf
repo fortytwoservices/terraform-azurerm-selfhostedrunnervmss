@@ -31,7 +31,7 @@ resource "azapi_resource" "rg" {
 
 resource "azapi_resource" "vmss_vnet" {
   count     = var.use_custom_subnet ? 0 : 1
-  type      = "Microsoft.Network/virtualNetworks@2025-05-01"
+  type      = "Microsoft.Network/virtualNetworks@2025-03-01"
   name      = "${var.virtual_machine_scale_set_name}-net"
   parent_id = local.resource_group_id
   location  = var.location
@@ -62,7 +62,7 @@ resource "azapi_resource" "vmss_vnet" {
 
 resource "azapi_resource" "vmss_subnet" {
   count     = var.use_custom_subnet ? 0 : 1
-  type      = "Microsoft.Network/virtualNetworks/subnets@2025-05-01"
+  type      = "Microsoft.Network/virtualNetworks/subnets@2025-03-01"
   name      = "vmss"
   parent_id = azapi_resource.vmss_vnet[0].id
   body = {
@@ -351,7 +351,7 @@ resource "azapi_resource" "vmss_windows" {
 
 resource "azapi_resource" "public_ip_nat" {
   for_each  = !var.use_custom_subnet && var.nat_gateway.enabled ? toset(["vmss"]) : []
-  type      = "Microsoft.Network/publicIPAddresses@2025-05-01"
+  type      = "Microsoft.Network/publicIPAddresses@2025-03-01"
   name      = "pip-${var.virtual_machine_scale_set_name}"
   parent_id = local.resource_group_id
   location  = var.location
@@ -365,7 +365,7 @@ resource "azapi_resource" "public_ip_nat" {
 
 resource "azapi_resource" "nat_gateway" {
   for_each  = var.nat_gateway.enabled ? toset(["vmss"]) : []
-  type      = "Microsoft.Network/natGateways@2025-05-01"
+  type      = "Microsoft.Network/natGateways@2025-03-01"
   name      = "ng-${var.virtual_machine_scale_set_name}"
   parent_id = local.resource_group_id
   location  = var.location
@@ -383,7 +383,7 @@ resource "azapi_resource" "nat_gateway" {
 
 resource "azapi_resource" "public_ip_lb" {
   count     = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
-  type      = "Microsoft.Network/publicIPAddresses@2025-05-01"
+  type      = "Microsoft.Network/publicIPAddresses@2025-03-01"
   name      = "${var.virtual_machine_scale_set_name}-lb-pip"
   parent_id = local.resource_group_id
   location  = var.location
@@ -397,7 +397,7 @@ resource "azapi_resource" "public_ip_lb" {
 
 resource "azapi_resource" "load_balancer" {
   count     = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
-  type      = "Microsoft.Network/loadBalancers@2025-05-01"
+  type      = "Microsoft.Network/loadBalancers@2025-03-01"
   name      = "${var.virtual_machine_scale_set_name}-lb"
   parent_id = local.resource_group_id
   location  = var.location
@@ -418,7 +418,7 @@ resource "azapi_resource" "load_balancer" {
 
 resource "azapi_resource" "lb_backend_address_pool" {
   count     = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
-  type      = "Microsoft.Network/loadBalancers/backendAddressPools@2025-05-01"
+  type      = "Microsoft.Network/loadBalancers/backendAddressPools@2025-03-01"
   name      = "backend"
   parent_id = azapi_resource.load_balancer[0].id
   body      = {}
@@ -426,7 +426,7 @@ resource "azapi_resource" "lb_backend_address_pool" {
 
 resource "azapi_resource" "lb_outbound_rule" {
   count                     = !var.use_custom_subnet && var.deploy_load_balancer ? 1 : 0
-  type                      = "Microsoft.Network/loadBalancers/outboundRules@2025-05-01"
+  type                      = "Microsoft.Network/loadBalancers/outboundRules@2025-03-01"
   name                      = "OutboundRule"
   parent_id                 = azapi_resource.load_balancer[0].id
   schema_validation_enabled = false
