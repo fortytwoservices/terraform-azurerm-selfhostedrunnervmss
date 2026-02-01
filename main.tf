@@ -30,13 +30,12 @@ resource "azapi_resource" "rg" {
 }
 
 resource "azapi_resource" "vmss_vnet" {
-  count                = var.use_custom_subnet ? 0 : 1
-  type                 = "Microsoft.Network/virtualNetworks@2025-03-01"
-  name                 = "${var.virtual_machine_scale_set_name}-net"
-  parent_id            = local.resource_group_id
-  location             = var.location
-  tags                 = var.tags
-  ignore_null_property = true
+  count     = var.use_custom_subnet ? 0 : 1
+  type      = "Microsoft.Network/virtualNetworks@2025-03-01"
+  name      = "${var.virtual_machine_scale_set_name}-net"
+  parent_id = local.resource_group_id
+  location  = var.location
+  tags      = var.tags
   body = {
     properties = {
       addressSpace = {
@@ -47,10 +46,15 @@ resource "azapi_resource" "vmss_vnet" {
       }
       enableDdosProtection        = false
       privateEndpointVNetPolicies = "Disabled"
-      subnets                     = null
+      subnets                     = []
       virtualNetworkPeerings      = []
     }
   }
+
+  ignore_null_property    = true
+  ignore_missing_property = true
+
+
   lifecycle {
     ignore_changes = [body.properties.subnets]
   }
@@ -72,13 +76,12 @@ resource "azapi_resource" "vmss_subnet" {
 }
 
 resource "azapi_resource" "vmss_linux" {
-  count                = var.operating_system == "ubuntu" ? 1 : 0
-  type                 = "Microsoft.Compute/virtualMachineScaleSets@2025-04-01"
-  name                 = var.virtual_machine_scale_set_name
-  parent_id            = local.resource_group_id
-  location             = var.location
-  tags                 = var.tags
-  ignore_null_property = true
+  count     = var.operating_system == "ubuntu" ? 1 : 0
+  type      = "Microsoft.Compute/virtualMachineScaleSets@2025-04-01"
+  name      = var.virtual_machine_scale_set_name
+  parent_id = local.resource_group_id
+  location  = var.location
+  tags      = var.tags
 
   dynamic "identity" {
     for_each = var.identity != null ? [var.identity] : []
@@ -222,19 +225,21 @@ resource "azapi_resource" "vmss_linux" {
     }
   }
 
+  ignore_null_property    = true
+  ignore_missing_property = true
+
   lifecycle {
     ignore_changes = [tags, body.sku.capacity, body.properties.virtualMachineProfile.extensionProfile]
   }
 }
 
 resource "azapi_resource" "vmss_windows" {
-  count                = var.operating_system == "windows" ? 1 : 0
-  type                 = "Microsoft.Compute/virtualMachineScaleSets@2025-04-01"
-  name                 = var.virtual_machine_scale_set_name
-  parent_id            = local.resource_group_id
-  location             = var.location
-  tags                 = var.tags
-  ignore_null_property = true
+  count     = var.operating_system == "windows" ? 1 : 0
+  type      = "Microsoft.Compute/virtualMachineScaleSets@2025-04-01"
+  name      = var.virtual_machine_scale_set_name
+  parent_id = local.resource_group_id
+  location  = var.location
+  tags      = var.tags
 
   dynamic "identity" {
     for_each = var.identity != null ? [var.identity] : []
@@ -324,6 +329,9 @@ resource "azapi_resource" "vmss_windows" {
       } : null
     }
   }
+
+  ignore_null_property    = true
+  ignore_missing_property = true
 
   lifecycle {
     ignore_changes = [tags, body.sku.capacity, body.properties.virtualMachineProfile.extensionProfile]
