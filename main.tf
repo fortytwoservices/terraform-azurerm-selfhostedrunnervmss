@@ -191,7 +191,21 @@ resource "azapi_resource" "vmss_linux" {
           }
         }
         extensionProfile = {
-          extensions = []
+          extensions = [{
+            name = "HealthExtension"
+            properties = {
+              autoUpgradeMinorVersion = true
+              publisher = "Microsoft.ManagedServices"
+              settings = {
+                protocol          = "tcp"
+                port              = 22
+                intervalInSeconds = 5
+                numberOfProbes    = 1
+              }
+              type               = "ApplicationHealthLinux"
+              typeHandlerVersion = "1.0"
+            }
+          }]
         }
 
         scheduledEventsProfile = var.enable_termination_notifications ? {
@@ -220,29 +234,29 @@ resource "azapi_resource" "vmss_linux" {
   }
 }
 
-resource "azapi_resource" "vmss_linux_extension_healthextension" {
-  count     = var.operating_system == "ubuntu" && var.enable_automatic_instance_repair ? 1 : 0
-  type      = "Microsoft.Compute/virtualMachineScaleSets/extensions@2025-04-01"
-  name      = "HealthExtension"
-  parent_id = azapi_resource.vmss_linux[0].id
-  body = {
-    properties = {
-      autoUpgradeMinorVersion = true
-      provisionAfterExtensions = [
-        "string"
-      ]
-      publisher = "Microsoft.ManagedServices"
-      settings = {
-        protocol          = "tcp"
-        port              = 22
-        intervalInSeconds = 5
-        numberOfProbes    = 1
-      }
-      type               = "ApplicationHealthLinux"
-      typeHandlerVersion = "1.0"
-    }
-  }
-}
+# resource "azapi_resource" "vmss_linux_extension_healthextension" {
+#   count     = var.operating_system == "ubuntu" && var.enable_automatic_instance_repair ? 1 : 0
+#   type      = "Microsoft.Compute/virtualMachineScaleSets/extensions@2025-04-01"
+#   name      = "HealthExtension"
+#   parent_id = azapi_resource.vmss_linux[0].id
+#   body = {
+#     properties = {
+#       autoUpgradeMinorVersion = true
+#       provisionAfterExtensions = [
+#         "string"
+#       ]
+#       publisher = "Microsoft.ManagedServices"
+#       settings = {
+#         protocol          = "tcp"
+#         port              = 22
+#         intervalInSeconds = 5
+#         numberOfProbes    = 1
+#       }
+#       type               = "ApplicationHealthLinux"
+#       typeHandlerVersion = "1.0"
+#     }
+#   }
+# }
 
 resource "azapi_resource" "vmss_windows" {
   count     = var.operating_system == "windows" ? 1 : 0
