@@ -16,8 +16,9 @@ jobs:
     name: Run Azure Defender for DevOps IaC scan
     runs-on: ubuntu-latest
     permissions:
-      actions: read
       contents: read
+      id-token: write
+      actions: read
       security-events: write
 
     steps:
@@ -29,6 +30,7 @@ jobs:
         id: msdo
         with:
           categories: 'IaC'
+          tools: 'trivy'
 
       - name: Upload results to GitHub Security tab
         if: success() || failure()
