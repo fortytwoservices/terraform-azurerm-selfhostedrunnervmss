@@ -7,7 +7,7 @@
 
 | :exclamation: NB!                      |
 | -------------------------------------- |
-| Ubuntu 26.04 has been added as preview |
+| Ubuntu 26.04 ("ubuntu-2604") has been added as preview |
 
 | :exclamation: NB!                                                                            |
 | -------------------------------------------------------------------------------------------- |
