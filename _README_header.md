@@ -3,7 +3,7 @@
 | :exclamation: NB!                                                              |
 | ------------------------------------------------------------------------------ |
 | The SKU windows2019-latest is deprecated and no new versions will be released. |
-| It will be removed on 2027-06-01                                               |
+| It will be removed on 2027-01-01                                               |
 
 | :exclamation: NB!                                      |
 | ------------------------------------------------------ |
