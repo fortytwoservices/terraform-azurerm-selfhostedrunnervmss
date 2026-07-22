@@ -3,6 +3,15 @@
 | :exclamation: NB!                                                        |
 | ------------------------------------------------------------------------ |
 | The SKU windows-2019 is deprecated and no new versions will be released. |
+| It will be removed 01.06.2027                                            |
+
+| :exclamation: NB!                      |
+| -------------------------------------- |
+| Ubuntu 26.04 has been added as preview |
+
+| :exclamation: NB!                                                                            |
+| -------------------------------------------------------------------------------------------- |
+| Windows 2025 and Windows Latest image will be changed 01.08.2026 to be "windows-2025-vs2026" |
 
 This module deploys a virtual machine scale set for self hosted runners for Azure DevOps and GitHub.
 
