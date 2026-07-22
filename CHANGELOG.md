@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.16.2...v1.17.0) (2026-07-22)
+
+
+### Features
+
+* add new sku and update readme ([#376](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/issues/376)) ([3e87cf9](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/3e87cf938593311cf31dc3c29c61e15e05400c65))
+
 ## [1.16.2](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.16.1...v1.16.2) (2025-10-22)
 
 
