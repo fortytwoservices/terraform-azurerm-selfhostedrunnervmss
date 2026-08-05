@@ -44,7 +44,7 @@ resource "azurerm_subnet" "vmss" {
 
   lifecycle {
     ignore_changes = [
-      service_endpoints,
+      service_endpoint,
     ]
   }
 }
