@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.17.1...v2.0.0) (2026-08-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename service_endpoints to service_endpoint ([#381](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/issues/381))
+
+### Features
+
+* rename service_endpoints to service_endpoint ([#381](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/issues/381)) ([2b96b47](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/2b96b475c6875a5f46fce698acc7f549c44acca2))
+
+
+### Bug Fixes
+
+* rename accelerated_networking_enabled for v5 ([#383](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/issues/383)) ([5e8f528](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/5e8f528d06a59b9e1f149bb047f211f585017558))
+
 ## [1.17.1](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.17.0...v1.17.1) (2026-07-22)
 
 
