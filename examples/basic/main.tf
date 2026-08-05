@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=4.44.0"
+      version = ">=5.0.0"
     }
   }
 }
@@ -14,8 +14,7 @@ provider "azurerm" {
 }
 
 module "vmss" {
-  source               = "fortytwoservices/selfhostedrunnervmss/azurerm"
-  version              = "1.16.1"
+  source               = "../.."
   operating_system     = "ubuntu"       # windows or ubuntu
   runner_platform      = "azure_devops" # azure_devops or github
   deploy_load_balancer = true

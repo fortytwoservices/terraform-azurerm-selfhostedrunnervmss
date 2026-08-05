@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=4.44.0"
+      version = ">=5.0.0"
     }
   }
 }
@@ -35,8 +35,7 @@ resource "azurerm_subnet" "vmss" {
 }
 
 module "vmss" {
-  source                          = "fortytwoservices/selfhostedrunnervmss/azurerm"
-  version                         = "1.16.1"
+  source                          = "../.."
   operating_system                = "ubuntu"       # windows or ubuntu
   runner_platform                 = "azure_devops" # azure_devops or github
   resource_group_name             = azurerm_resource_group.rg.name
@@ -44,7 +43,7 @@ module "vmss" {
   location                        = azurerm_resource_group.rg.location
   virtual_machine_scale_set_name  = "runners"
   sku                             = "Standard_D2s_v3"
-  ssh_public_keys                 = ["ssh-rsa AAAAB3NzaC1yc2EAAAADA....QFv2PJ0= marius@42device"]
+  ssh_public_keys                 = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPHqxwgYc8/xszU9E8GmVsoF4jcXeqqEr1dTDEj8ZZoX terraform-example"]
   subnet_id                       = azurerm_subnet.vmss.id
   use_custom_subnet               = true
   vmss_encryption_at_host_enabled = true
