@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v2.0.0...v2.1.0) (2026-10-22)
+
+
+### Features
+
+* add announcement of ubuntu-latest based on  ubuntu-2604 ([#388](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/issues/388)) ([86a150f](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/commit/86a150f345f1a005648ff0d7739d1641918e69e8))
+
 ## [2.0.0](https://github.com/fortytwoservices/terraform-azurerm-selfhostedrunnervmss/compare/v1.17.1...v2.0.0) (2026-08-05)
 
 
